@@ -7,6 +7,7 @@ import codecs
 import inspect
 import re
 import sys
+import logging
 
 """
     This is a library of decorators designed for writing scripts quickly. This
