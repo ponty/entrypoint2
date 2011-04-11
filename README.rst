@@ -32,7 +32,7 @@ the function can not be called from other modules.
 
 Goals
 ================
- - the function should have the same behavior as without the entrypoint2 decorator
+ - the decorated function should have the same behavior as without the entrypoint2 decorator
  - generate CLI parameters from function signature 
  - generate CLI documentation from python documentation 
  - boolean parameters should be toggle flags
