@@ -9,17 +9,6 @@ except:
     warnings.warn('sphinxcontrib.paverutils was not found, you will not be able to produce documentation')
 
 try:
-    from github.tools.task import (
-        gh_pages_build,
-        gh_pages_clean,
-        gh_pages_create,
-        gh_pages_update,
-        gh_register,
-        )
-except ImportError, e:
-    info("some tasks could not not be imported.")
-
-try:
     # Optional tasks, only needed for development
     # -*- Optional import: -*-
     import paver.doctools
