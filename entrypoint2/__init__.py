@@ -265,7 +265,7 @@ def signature_parser(func):
         if param in shorts:
             short = shorts[param]
         else:
-            if param not in special_flags:
+            if param not in special_flags and len(param)>1:
                 first_char=param[0]
                 if first_char not in used_shorts:
                     used_shorts.add(first_char)
