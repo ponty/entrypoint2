@@ -48,6 +48,8 @@ classifiers = [
 install_requires = [
     # -*- Install requires: -*-
     'setuptools',
+    'decorator',
+    'argparse',
     ]
 
 entry_points = """
