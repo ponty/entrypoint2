@@ -8,7 +8,8 @@ def add(one, two=4, three=False):
     ''' This function adds two number.
     
     one: first number to add
-    two: second number to add
+    :param two: second number to add
+    :rtype: int
     '''
     sum = str(int(one) + int(two))
     

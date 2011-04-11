@@ -58,7 +58,7 @@ Additional features over original entrypoint_:
  - automatic ``--version`` flag, which prints version variable from the current module
    (``__version__``, ``VERSION``, ..) 
  - automatic ``--debug`` flag, which turns on logging 
- - short flags are generated automatically (e.g. --parameter -> -p) 
+ - short flags are generated automatically (e.g. ``--parameter`` -> ``-p``) 
  - unit tests
 
 Known problems:
