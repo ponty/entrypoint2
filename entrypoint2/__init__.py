@@ -433,10 +433,14 @@ def acceptargv(func):
                 kwargs = parser.parse_args(argv).__dict__
                 
                 # special cli flags
-                if kwargs.get('version'):
-                    print module_version(func)
-                    return
+                
+                # --version is handled by ArgParse
+                #if kwargs.get('version'):
+                #    print module_version(func)
+                #    return
                 del kwargs['version']
+                
+                # --debug
                 if kwargs.get('debug'):
                     logging.basicConfig(level=logging.DEBUG)
                 del kwargs['debug']
