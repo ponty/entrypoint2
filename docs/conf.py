@@ -19,7 +19,7 @@ for line in open(py).readlines():
 assert __version__
 release = __version__
 
-#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 # Extension
 extensions = [

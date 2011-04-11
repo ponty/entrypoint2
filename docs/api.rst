@@ -1,7 +1,5 @@
 API
 ===
 
-.. autoclass:: easyprocess.EasyProcess
-    :members:
-
-    
+.. automodule:: entrypoint2
+    :members: entrypoint, UsageError

@@ -1,6 +1,9 @@
 Original entrypoint documentation
 ==================================
 
+Source: http://pypi.python.org/pypi/entrypoint/
+
+
 This is a decorator library that helps one to write small scripts in Python.
 
 There are three main features that it provides:
@@ -51,24 +54,22 @@ or extra interfaces for re-using components.
     @entrywithfile and @runwithfile (see table below) so that you only
     need one decorator.
 
-::
+Specifically, this decorator will call the function as part of the
+process of decorating. Thus any decorators that are applied after
+this one will not have been applied in the case the function is
+called later.
 
-    # Specifically, this decorator will call the function as part of the
-    # process of decorating. Thus any decorators that are applied after
-    # this one will not have been applied in the case the function is
-    # called later.
+autorun can also be used as a standalone function, which is necessary if
+you would like to use this functionality as part of another library.
+In such a case you need to pass it a second parameter indicating how far
+many levels above in the stack frame within autorun you would expect for
+__name__ to equal '__main__'.
 
-    # autorun can also be used as a standalone function, which is necessary if
-    # you would like to use this functionality as part of another library.
-    # In such a case you need to pass it a second parameter indicating how far
-    # many levels above in the stack frame within autorun you would expect for
-    # __name__ to equal '__main__'.
-
-    # >>> def autorunwithone(func):
-    # ...     autorun(lambda: func(1), 2)
-    # >>> @autorunwithone
-    # ... def puts(y):
-    # ...     print y
+    >>> def autorunwithone(func):
+    ...     autorun(lambda: func(1), 2)
+    >>> @autorunwithone
+    ... def puts(y):
+    ...     print y
 
 
 

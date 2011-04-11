@@ -24,7 +24,7 @@ except ImportError, e:
 NAME = 'entrypoint2'
 PACKAGE = 'entrypoint2'
 URL = 'https://github.com/ponty/entrypoint2'
-DESCRIPTION = 'Easy to use python subprocess interface.'
+DESCRIPTION = 'command-line interface for python modules, fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_ '
 
 
 __version__ = None
