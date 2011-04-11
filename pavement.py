@@ -8,6 +8,16 @@ except:
     import warnings
     warnings.warn('sphinxcontrib.paverutils was not found, you will not be able to produce documentation')
 
+try:
+    from github.tools.task import (
+        gh_pages_build,
+        gh_pages_clean,
+        gh_pages_create,
+        gh_pages_update,
+        gh_register,
+        )
+except ImportError, e:
+    info("some tasks could not not be imported.")
 
 try:
     # Optional tasks, only needed for development
@@ -163,6 +173,11 @@ def clean():
         x.remove()
     for x in dls:
         x.rmtree()
+
+@task
+@needs('html')
+def ghpages():
+    sh('ghp-import -p docs/_build/html/')
 
 @task
 @needs('sloccount', 'html', 'pdf', 'sdist', 'nose')

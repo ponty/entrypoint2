@@ -1,4 +1,4 @@
-entrypoint2 is a command-line interface for python modules, fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_ 
+entrypoint2 is an easy to use command-line interface for python modules, fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_ 
 
 
 Links:
@@ -54,10 +54,10 @@ Features
 Additional features over original entrypoint_:
  - function signature is preserved so it can be called both from command-line and external module
  - automatic ``--version`` flag, which prints version variable from the current module
-   (``__version``, ``VERSION``, ..) 
- - short flags are generated automatically (e.g. --parameter -> -p) 
+   (``__version__``, ``VERSION``, ..) 
  - automatic ``--debug`` flag, which turns on logging 
- - unittests
+ - short flags are generated automatically (e.g. --parameter -> -p) 
+ - unit tests
 
 Known problems:
  - Python 3 is not supported

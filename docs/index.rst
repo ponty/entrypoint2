@@ -1,4 +1,4 @@
-entrypoint2 is a command-line interface for python modules, 
+entrypoint2 is an easy to use command-line interface for python modules, 
 fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_ 
 
 Date: |today|
