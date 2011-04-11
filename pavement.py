@@ -23,7 +23,7 @@ except ImportError, e:
 NAME = 'entrypoint2'
 PACKAGE = 'entrypoint2'
 URL = 'https://github.com/ponty/entrypoint2'
-DESCRIPTION = 'command-line interface for python modules, fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_ '
+DESCRIPTION = 'easy to use command-line interface for python modules, fork of entrypoint'
 
 
 __version__ = None
