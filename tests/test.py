@@ -1,6 +1,9 @@
+from easyprocess import Proc
 from nose.tools import eq_
 from unittest import TestCase
-from easyprocess import Proc
+from path import path
+
+d=path(__file__).parent
 
 class Test(TestCase):
     def test_1_call(self):
@@ -18,65 +21,65 @@ class Test(TestCase):
     
     
     def test_1_cli(self):
-        cmd = 'python example1.py 5'
+        cmd = 'python %s 5' % (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.return_code, 0)
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
          
-        cmd = 'python example1.py 5 --two 7 --debug'
+        cmd = 'python %s 5 --two 7 --debug'% (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.return_code, 0)
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
 
-        cmd = 'python example1.py 5 --three -t 2 --debug'
+        cmd = 'python %s 5 --three -t 2 --debug'% (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.return_code, 0)
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
 
-        cmd = 'python example1.py 5 -t x'
+        cmd = 'python %s 5 -t x'% (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.return_code > 0, 1)
         eq_(p.stdout, '') 
         eq_(p.stderr != '', 1) 
     
-        cmd = 'python example1.py -t 1  5  --debug'
+        cmd = 'python %s -t 1  5  --debug'% (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.return_code, 0)
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
     
     def test_2_cli(self):
-        cmd = 'python example2.py 5 2'
+        cmd = 'python %s 5 2'% (d / 'example2.py')
         p = Proc(cmd).call()
         eq_(p.return_code, 0)
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
          
-        cmd = 'python example2.py --debug    5 2'
+        cmd = 'python %s --debug    5 2'% (d / 'example2.py')
         p = Proc(cmd).call()
         eq_(p.return_code, 0)
         eq_(p.stdout, '') 
         eq_(p.stderr, 'DEBUG:root:5') 
 
     def test_1_ver(self):
-        cmd = 'python example1.py --version'
+        cmd = 'python %s --version'% (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.stdout, '') 
         eq_(p.stderr, '3.2') 
         eq_(p.return_code, 0)
 
     def test_2_ver(self):
-        cmd = 'python example2.py --version'
+        cmd = 'python %s --version'% (d / 'example2.py')
         p = Proc(cmd).call()
         eq_(p.stdout, '') 
         eq_(p.stderr, '1.2') 
         eq_(p.return_code, 0)
     
     def test_3_ver(self):
-        cmd = 'python example3.py --version'
+        cmd = 'python %s --version'% (d / 'example3.py')
         p = Proc(cmd).call()
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
@@ -85,7 +88,7 @@ class Test(TestCase):
 
 
     def test_1_help(self):
-        cmd = 'python example1.py --help'
+        cmd = 'python %s --help'% (d / 'example1.py')
         p = Proc(cmd).call()
         eq_(p.stderr, '') 
         eq_(p.return_code, 0)
@@ -95,13 +98,13 @@ class Test(TestCase):
         eq_('--three' in p.stdout, 1) 
 
     def test_2_help(self):
-        cmd = 'python example2.py --help'
+        cmd = 'python %s --help'% (d / 'example2.py')
         p = Proc(cmd).call()
         eq_(p.stderr, '') 
         eq_(p.return_code, 0)
 
     def test_3_help(self):
-        cmd = 'python example3.py --help'
+        cmd = 'python %s --help'% (d / 'example3.py')
         p = Proc(cmd).call()
         eq_(p.stderr, '') 
         eq_(p.return_code, 0)
