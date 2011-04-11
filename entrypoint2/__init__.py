@@ -1,13 +1,14 @@
 from __future__ import with_statement
 from contextlib import nested
 from decorator import decorator
-from functools import wraps
 import argparse
 import codecs
 import inspect
 import re
 import sys
 import logging
+
+__version__ = '0.0.1'
 
 """
     This is a library of decorators designed for writing scripts quickly. This
@@ -55,7 +56,6 @@ import logging
                 print >>sys.stderr, "line %s" % lineno
 """
 
-__version__ = '0.0.0'
 
 ENCODING='utf8'
 
@@ -129,6 +129,16 @@ def _parse_doc(docs):
     if docs:
 
         for line in docs.split("\n"):
+            
+            line = line.strip()
+
+            #remove starting ':param'
+            if line.startswith(':param'):
+                line = line[len(':param'):]
+
+            #skip ':rtype:' row
+            if line.startswith(':rtype:'):
+                continue
 
             if line.strip() == "----":
                 break
@@ -453,6 +463,11 @@ def acceptargv(func):
                     return func(**kwargs)
             except UsageError, e:
                 parser.error(e.message)
+    
+    main.__doc__ = func.__doc__
+    main.__name__ = func.__name__
+    main.__module__ = func.__module__
+    main.__dict__ = func.__dict__.copy()
 
     return main
 

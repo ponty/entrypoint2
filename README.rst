@@ -53,6 +53,8 @@ Features
 
 Additional features over original entrypoint_:
  - function signature is preserved so it can be called both from command-line and external module
+ - function name, doc and module are preserved so it can be used with sphinx autodoc_
+ - sphinx autodoc_ documentation style is supported: ``:param x: this is x``
  - automatic ``--version`` flag, which prints version variable from the current module
    (``__version__``, ``VERSION``, ..) 
  - automatic ``--debug`` flag, which turns on logging 
@@ -62,7 +64,6 @@ Additional features over original entrypoint_:
 Known problems:
  - Python 3 is not supported
  - only @entrypoint is tested
- - @entrypoint decorator changes function name, doc; this can be resolved if necessary
  - Autocompletion is not supported
 
 Basic usage
@@ -142,3 +143,4 @@ Uninstall
 .. _setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall
 .. _pip: http://pip.openplans.org/
 .. _entrypoint: http://pypi.python.org/pypi/entrypoint/
+.. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
