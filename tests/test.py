@@ -9,7 +9,7 @@ class Test(TestCase):
     
     def test_2_call(self):
         import example2 
-        eq_(example2.f(5,1), 6) 
+        eq_(example2.f(5, 1), 6) 
 
     def test_3_call(self):
         import example3 
@@ -24,8 +24,43 @@ class Test(TestCase):
         eq_(p.stdout, '') 
         eq_(p.stderr, '') 
          
+        cmd = 'python example1.py 5 --two 7 --debug'
+        p = Proc(cmd).call()
+        eq_(p.return_code, 0)
+        eq_(p.stdout, '') 
+        eq_(p.stderr, '') 
+
+        cmd = 'python example1.py 5 --three -t 2 --debug'
+        p = Proc(cmd).call()
+        eq_(p.return_code, 0)
+        eq_(p.stdout, '') 
+        eq_(p.stderr, '') 
+
+        cmd = 'python example1.py 5 -t x'
+        p = Proc(cmd).call()
+        eq_(p.return_code > 0, 1)
+        eq_(p.stdout, '') 
+        eq_(p.stderr != '', 1) 
     
+        cmd = 'python example1.py -t 1  5  --debug'
+        p = Proc(cmd).call()
+        eq_(p.return_code, 0)
+        eq_(p.stdout, '') 
+        eq_(p.stderr, '') 
     
+    def test_2_cli(self):
+        cmd = 'python example2.py 5 2'
+        p = Proc(cmd).call()
+        eq_(p.return_code, 0)
+        eq_(p.stdout, '') 
+        eq_(p.stderr, '') 
+         
+        cmd = 'python example2.py --debug    5 2'
+        p = Proc(cmd).call()
+        eq_(p.return_code, 0)
+        eq_(p.stdout, '') 
+        eq_(p.stderr, 'DEBUG:root:5') 
+
     def test_1_ver(self):
         cmd = 'python example1.py --version'
         p = Proc(cmd).call()
