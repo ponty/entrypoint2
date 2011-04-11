@@ -1,12 +1,12 @@
 from __future__ import with_statement
-from decorator import decorator
 from contextlib import nested
+from decorator import decorator
+from functools import wraps
+import argparse
 import codecs
 import inspect
-import sys
-import argparse
 import re
-from functools import wraps
+import sys
 
 """
     This is a library of decorators designed for writing scripts quickly. This
@@ -54,7 +54,17 @@ from functools import wraps
                 print >>sys.stderr, "line %s" % lineno
 """
 
+__version__ = '0.0.0'
+
 ENCODING='utf8'
+
+def module_version(func):
+    version= None
+    for v in '__version__ VERSION version'.split():
+        version = func.func_globals.get(v)
+        if version:
+            break
+    return version
 
 class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
     def __init__(self, *args, **kwargs):
@@ -239,15 +249,36 @@ def signature_parser(func):
 
     parser = argparse.ArgumentParser(description=description, epilog=epilog, formatter_class=ParagraphPreservingArgParseFormatter)
 
+    # special flags
+    #special_flags=['debug']
+    special_flags=['version','debug']
+    params += special_flags
+    defaults += (False,False,)
+    helps['version']="show program's version number and exit"
+    helps['debug'] = 'set logging level to DEBUG'
+    
     # Optional flag options
+    used_shorts = set()
     for param,default in zip(params, defaults):
         args = ["--%s" % param.replace("_", "-")]
+        short=None
         if param in shorts:
-            args = [shorts[param]] + args
+            short = shorts[param]
+        else:
+            if param not in special_flags:
+                first_char=param[0]
+                if first_char not in used_shorts:
+                    used_shorts.add(first_char)
+                    short = '-' + first_char
+        if short:
+            args = [short] + args
 
         kwargs = {'default': default, 'dest': param.replace("-", "_")}
         
-        if default is True:
+        if param == 'version':
+            kwargs['action'] = 'version'
+            kwargs['version'] = module_version(func)
+        elif default is True:
             kwargs['action'] = 'store_false'
         elif default is False:
             kwargs['action'] = 'store_true'
@@ -367,7 +398,7 @@ def autorun(func, _depth=1):
 
     frame_local = sys._getframe(_depth).f_locals
     if '__name__' in frame_local and frame_local['__name__'] == '__main__':
-        func()
+        func(argv = sys.argv[1:])
 
     return func
 
@@ -393,19 +424,30 @@ def acceptargv(func):
 
     parser = signature_parser(func)
 
-    def main(argv=None):
-
+    def main(*args, **kw):
+        argv=kw.get('argv', None)
         if argv == None:
-            argv = sys.argv[1:]
-
-        try:
-            kwargs = parser.parse_args(argv).__dict__
-            if "__args" in kwargs:
-                return func(*_correct_args(func, kwargs))
-            else:
-                return func(**kwargs)
-        except UsageError, e:
-            parser.error(e.message)
+            return func(*args, **kw)
+        else:
+            try:
+                kwargs = parser.parse_args(argv).__dict__
+                
+                # special cli flags
+                if kwargs.get('version'):
+                    print module_version(func)
+                    return
+                del kwargs['version']
+                if kwargs.get('debug'):
+                    logging.basicConfig(level=logging.DEBUG)
+                del kwargs['debug']
+                    
+                
+                if "__args" in kwargs:
+                    return func(*_correct_args(func, kwargs))
+                else:
+                    return func(**kwargs)
+            except UsageError, e:
+                parser.error(e.message)
 
     return main
 
