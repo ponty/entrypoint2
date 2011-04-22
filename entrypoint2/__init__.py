@@ -261,12 +261,16 @@ def signature_parser(func):
     parser = argparse.ArgumentParser(description=description, epilog=epilog, formatter_class=ParagraphPreservingArgParseFormatter)
 
     # special flags
-    #special_flags=['debug']
-    special_flags=['version','debug']
-    params += special_flags
-    defaults += (False,False,)
-    helps['version']="show program's version number and exit"
+    special_flags=[]
+    
+    special_flags += ['debug']
+    defaults += (False,)
     helps['debug'] = 'set logging level to DEBUG'
+    if module_version(func):
+        special_flags += ['version']
+        defaults += (False,)
+        helps['version']="show program's version number and exit"
+    params += special_flags
     
     # Optional flag options
     used_shorts = set()
@@ -449,7 +453,8 @@ def acceptargv(func):
                 #if kwargs.get('version'):
                 #    print module_version(func)
                 #    return
-                del kwargs['version']
+                if 'version' in kwargs.keys():
+                    del kwargs['version']
                 
                 # --debug
                 if kwargs.get('debug'):

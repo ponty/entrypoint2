@@ -70,6 +70,13 @@ class Test(TestCase):
         eq_(p.stdout, '') 
         eq_(p.stderr, 'DEBUG:root:5') 
 
+    def test_3_cli(self):
+        cmd = 'python %s ' % (d / 'example3.py')
+        p = Proc(cmd).call()
+        eq_(p.return_code, 0)
+        eq_(p.stdout, '') 
+        eq_(p.stderr, '') 
+
     def test_1_ver(self):
         cmd = 'python %s --version' % (d / 'example1.py')
         p = Proc(cmd).call()
@@ -88,8 +95,8 @@ class Test(TestCase):
         cmd = 'python %s --version' % (d / 'example3.py')
         p = Proc(cmd).call()
         eq_(p.stdout, '') 
-        eq_(p.stderr, '') 
-        eq_(p.return_code, 0)
+        self.assertNotEqual(p.stderr, '') 
+        self.assertNotEqual(p.return_code, 0)
     
 
 
