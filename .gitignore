@@ -23,6 +23,10 @@ pip-log.txt
 .version
 nosetests.xml
 
+distribute_setup.py
+*.prefs
+sloccount.sc
+
 #pdf
 !/docs
 !/docs/_build
@@ -30,3 +34,4 @@ nosetests.xml
 !*.pdf
 
 !.gitignore
+
