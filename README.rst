@@ -63,7 +63,8 @@ Additional features over original entrypoint_:
 
 Known problems:
  - Python 3 is not supported
- - only @entrypoint is tested
+ - there are more decorators in the module inherited from original entrypoint_,
+   but only @entrypoint  is tested. 
  - Autocompletion is not supported
 
 Basic usage
