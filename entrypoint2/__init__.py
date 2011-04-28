@@ -367,7 +367,37 @@ def entrypoint(func):
         decorators further out will not be applied to the function until after
         it is run.
     """ 
-    return autorun(acceptargv(func), 2)
+    frame_local = sys._getframe(1).f_locals
+    if '__name__' in frame_local and frame_local['__name__'] == '__main__':
+        argv = sys.argv[1:]
+
+        parser = signature_parser(func)
+        try:
+            kwargs = parser.parse_args(argv).__dict__
+            
+            # special cli flags
+            
+            # --version is handled by ArgParse
+            #if kwargs.get('version'):
+            #    print module_version(func)
+            #    return
+            if 'version' in kwargs.keys():
+                del kwargs['version']
+            
+            # --debug
+            if kwargs.get('debug'):
+                logging.basicConfig(level=logging.DEBUG)
+            del kwargs['debug']
+                            
+            if "__args" in kwargs:
+                return func(*_correct_args(func, kwargs))
+            else:
+                return func(**kwargs)
+            
+        except UsageError, e:
+            parser.error(e.message)
+            
+    return func
 
 def entrywithfile(*argspec, **kwspec):
     """
@@ -417,8 +447,7 @@ def autorun(func, _depth=1):
 
     return func
 
-@decorator
-def acceptargv(func, *args, **kw):
+def acceptargv(func):
     """
         Transforms the signature of the function, and it's associated __doc__
         into an argparse-parser, then calls the function with the results of
@@ -440,34 +469,42 @@ def acceptargv(func, *args, **kw):
 
     parser = signature_parser(func)
 
-    argv=kw.get('argv', None)
-    if argv == None:
-        return func(*args, **kw)
-    else:
-        try:
-            kwargs = parser.parse_args(argv).__dict__
-            
-            # special cli flags
-            
-            # --version is handled by ArgParse
-            #if kwargs.get('version'):
-            #    print module_version(func)
-            #    return
-            if 'version' in kwargs.keys():
-                del kwargs['version']
-            
-            # --debug
-            if kwargs.get('debug'):
-                logging.basicConfig(level=logging.DEBUG)
-            del kwargs['debug']
+    def main(*args, **kw):
+        argv=kw.get('argv', None)
+        if argv == None:
+            return func(*args, **kw)
+        else:
+            try:
+                kwargs = parser.parse_args(argv).__dict__
                 
-            
-            if "__args" in kwargs:
-                return func(*_correct_args(func, kwargs))
-            else:
-                return func(**kwargs)
-        except UsageError, e:
-            parser.error(e.message)
+                # special cli flags
+                
+                # --version is handled by ArgParse
+                #if kwargs.get('version'):
+                #    print module_version(func)
+                #    return
+                if 'version' in kwargs.keys():
+                    del kwargs['version']
+                
+                # --debug
+                if kwargs.get('debug'):
+                    logging.basicConfig(level=logging.DEBUG)
+                del kwargs['debug']
+                    
+                
+                if "__args" in kwargs:
+                    return func(*_correct_args(func, kwargs))
+                else:
+                    return func(**kwargs)
+            except UsageError, e:
+                parser.error(e.message)
+    
+    main.__doc__ = func.__doc__
+    main.__name__ = func.__name__
+    main.__module__ = func.__module__
+    main.__dict__ = func.__dict__.copy()
+
+    return main
 
 def withuserfile(__encoding=None, *argspec, **kwspec):
     """
