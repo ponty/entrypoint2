@@ -8,7 +8,7 @@ import re
 import sys
 import logging
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 """
     This is a library of decorators designed for writing scripts quickly. This
