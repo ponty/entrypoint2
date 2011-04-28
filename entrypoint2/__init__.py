@@ -417,7 +417,8 @@ def autorun(func, _depth=1):
 
     return func
 
-def acceptargv(func):
+@decorator
+def acceptargv(func, *args, **kw):
     """
         Transforms the signature of the function, and it's associated __doc__
         into an argparse-parser, then calls the function with the results of
@@ -439,42 +440,34 @@ def acceptargv(func):
 
     parser = signature_parser(func)
 
-    def main(*args, **kw):
-        argv=kw.get('argv', None)
-        if argv == None:
-            return func(*args, **kw)
-        else:
-            try:
-                kwargs = parser.parse_args(argv).__dict__
+    argv=kw.get('argv', None)
+    if argv == None:
+        return func(*args, **kw)
+    else:
+        try:
+            kwargs = parser.parse_args(argv).__dict__
+            
+            # special cli flags
+            
+            # --version is handled by ArgParse
+            #if kwargs.get('version'):
+            #    print module_version(func)
+            #    return
+            if 'version' in kwargs.keys():
+                del kwargs['version']
+            
+            # --debug
+            if kwargs.get('debug'):
+                logging.basicConfig(level=logging.DEBUG)
+            del kwargs['debug']
                 
-                # special cli flags
-                
-                # --version is handled by ArgParse
-                #if kwargs.get('version'):
-                #    print module_version(func)
-                #    return
-                if 'version' in kwargs.keys():
-                    del kwargs['version']
-                
-                # --debug
-                if kwargs.get('debug'):
-                    logging.basicConfig(level=logging.DEBUG)
-                del kwargs['debug']
-                    
-                
-                if "__args" in kwargs:
-                    return func(*_correct_args(func, kwargs))
-                else:
-                    return func(**kwargs)
-            except UsageError, e:
-                parser.error(e.message)
-    
-    main.__doc__ = func.__doc__
-    main.__name__ = func.__name__
-    main.__module__ = func.__module__
-    main.__dict__ = func.__dict__.copy()
-
-    return main
+            
+            if "__args" in kwargs:
+                return func(*_correct_args(func, kwargs))
+            else:
+                return func(**kwargs)
+        except UsageError, e:
+            parser.error(e.message)
 
 def withuserfile(__encoding=None, *argspec, **kwspec):
     """
