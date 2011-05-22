@@ -1,7 +1,7 @@
-entrypoint2 is an easy to use command-line interface for python modules, 
-fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_ 
+**entrypoint2**
 
-Date: |today|
+:Date: |today|
+:PDF: `entrypoint2.pdf <entrypoint2.pdf>`_
 
 Contents:
 
@@ -12,6 +12,7 @@ Contents:
     entrypoint_readme
     usage
     api
+    dev
 
 Indices and tables
 ==================

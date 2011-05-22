@@ -27,11 +27,5 @@ distribute_setup.py
 *.prefs
 sloccount.sc
 
-#pdf
-!/docs
-!/docs/_build
-!/docs/_build/latex
-!*.pdf
-
 !.gitignore
 

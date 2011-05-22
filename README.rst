@@ -2,9 +2,8 @@ entrypoint2 is an easy to use command-line interface for python modules, fork of
 
 
 Links:
- * `home <https://github.com/ponty/entrypoint2>`_
- * `html documentation <http://ponty.github.com/entrypoint2>`_
- * `pdf documentation <https://github.com/ponty/entrypoint2/raw/master/docs/_build/latex/entrypoint2.pdf>`_
+ * home: https://github.com/ponty/entrypoint2
+ * documentation: http://ponty.github.com/entrypoint2
 
 
 Background
