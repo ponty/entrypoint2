@@ -8,7 +8,7 @@ import re
 import sys
 import logging
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 """
     This is a library of decorators designed for writing scripts quickly. This
@@ -285,7 +285,8 @@ def signature_parser(func):
                 if first_char not in used_shorts:
                     used_shorts.add(first_char)
                     short = '-' + first_char
-        if short:
+        # -h conflicts with 'help'
+        if short and short != '-h': 
             args = [short] + args
 
         kwargs = {'default': default, 'dest': param.replace("-", "_")}
