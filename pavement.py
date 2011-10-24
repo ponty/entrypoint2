@@ -61,7 +61,7 @@ setup(
     description=DESCRIPTION,
     long_description=open('README.rst', 'r').read(),
     classifiers=classifiers,
-    keywords='subprocess interface',
+    keywords='argparse decorator optparse signature command-line',
     author='ponty',
     #author_email='',
     url=URL,
