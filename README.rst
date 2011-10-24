@@ -49,7 +49,7 @@ Similar projects
  * `commandline <http://pypi.python.org/pypi/commandline>`_
  * `optfunc <https://github.com/simonw/optfunc>`_: it has the same concept
  * `commando (1) <http://freshmeat.net/projects/commando>`_
- * `commando (2) <https://github.com/lakshmivyas/commando`_
+ * `commando (2) <https://github.com/lakshmivyas/commando>`_
  
 Features
 ============
