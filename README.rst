@@ -46,7 +46,11 @@ Similar projects
  * `baker <http://bitbucket.org/mchaput/baker>`_   
  * `argh <http://packages.python.org/argh/>`_
  * `opster <http://pypi.python.org/pypi/opster/>`_
-
+ * `commandline <http://pypi.python.org/pypi/commandline>`_
+ * `optfunc <https://github.com/simonw/optfunc>`_: it has the same concept
+ * `commando <http://freshmeat.net/projects/commando>`_
+ * `commando <https://github.com/lakshmivyas/commando`_
+ 
 Features
 ============
 
