@@ -48,8 +48,8 @@ Similar projects
  * `opster <http://pypi.python.org/pypi/opster/>`_
  * `commandline <http://pypi.python.org/pypi/commandline>`_
  * `optfunc <https://github.com/simonw/optfunc>`_: it has the same concept
- * `commando <http://freshmeat.net/projects/commando>`_
- * `commando <https://github.com/lakshmivyas/commando`_
+ * `commando (1) <http://freshmeat.net/projects/commando>`_
+ * `commando (2) <https://github.com/lakshmivyas/commando`_
  
 Features
 ============
