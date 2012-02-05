@@ -116,15 +116,8 @@ Installation
 General
 --------
 
- * install setuptools_ or pip_
- * install the program:
-
-if you have setuptools_ installed::
-
-    # as root
-    easy_install entrypoint2
-
-if you have pip_ installed::
+ * install pip_
+ * install the program::
 
     # as root
     pip install entrypoint2
@@ -133,8 +126,8 @@ Ubuntu
 ----------
 ::
 
-    sudo apt-get install python-setuptools
-    sudo easy_install entrypoint2
+    sudo apt-get install python-pip
+    sudo pip install entrypoint2
 
 Uninstall
 ----------
