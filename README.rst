@@ -63,12 +63,11 @@ Additional features over original entrypoint_:
  - automatic ``--debug`` flag, which turns on logging 
  - short flags are generated automatically (e.g. ``--parameter`` -> ``-p``) 
  - unit tests
-
+ - supported python versions: 2.5, 2.6, 2.7, 3.1, 3.2, PyPy
+ 
 Known problems:
- - Python 3 is not supported
  - there are more decorators in the module inherited from original entrypoint_,
    but only @entrypoint  is tested. 
- - Autocompletion is not supported
 
 Basic usage
 ============

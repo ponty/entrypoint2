@@ -17,7 +17,7 @@ pip-log.txt
 */build/*
 */_build/*
 */_build/latex/*
-#.*
+
 *.class
 *.png
 .version
@@ -27,5 +27,6 @@ distribute_setup.py
 *.prefs
 sloccount.sc
 
+.*
 !.gitignore
 

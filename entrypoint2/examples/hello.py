@@ -11,9 +11,9 @@ def add(one, two=4, three=False):
     :param two: second number to add
     :rtype: int
     '''
-    sum = str(int(one) + int(two))
+    s = str(int(one) + int(two))
     
-    logging.debug('logging sum from hello.py:' + sum)
-    print 'printing sum from hello.py:', sum          
+    logging.debug('logging sum from hello.py:' + s)
+    print 'printing sum from hello.py:', s          
     
-    return sum
+    return s

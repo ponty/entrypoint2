@@ -8,7 +8,7 @@ __version__='5.2'
 def f(): 
     ''' calls hello
     '''
-    sum=hello.add(7,2)          
+    s=hello.add(7,2)          
 
-    logging.debug('logging sum from caller.py:' + sum)
-    print 'printing sum from caller.py:', sum          
+    logging.debug('logging sum from caller.py:' + s)
+    print 'printing sum from caller.py:', s          

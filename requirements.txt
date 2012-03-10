@@ -1,4 +1,3 @@
-setuptools
 decorator
 argparse
 

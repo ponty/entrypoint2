@@ -1,5 +1,5 @@
 from __future__ import with_statement
-from contextlib import nested
+#from contextlib import nested
 from decorator import decorator
 import argparse
 import codecs
@@ -8,7 +8,7 @@ import re
 import sys
 import logging
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 """
     This is a library of decorators designed for writing scripts quickly. This
@@ -58,6 +58,15 @@ __version__ = '0.0.4'
 
 
 ENCODING='utf8'
+
+PY3 = sys.version_info[0] >= 3
+
+
+def unidecode(x):
+    if PY3:
+        return x
+    else:
+        return x.decode(ENCODING)
 
 def module_version(func):
     version= None
@@ -301,7 +310,7 @@ def signature_parser(func):
         else:
             kwargs['action'] = 'store'
             if type(default) in [type(None), unicode]:
-                kwargs['type'] = lambda x: x.decode(ENCODING)
+                kwargs['type'] = unidecode
             else:
                 kwargs['type'] = type(default)
 
@@ -316,7 +325,7 @@ def signature_parser(func):
     # Compulsary positional options
     for need in needed:
 
-        kwargs = {'action': 'store', 'type': lambda x: x.decode(ENCODING)}
+        kwargs = {'action': 'store', 'type': unidecode}
 
         if need in helps:
             kwargs['help'] = helps[need]
@@ -330,7 +339,7 @@ def signature_parser(func):
 
     # The trailing arguments
     if trail:
-        kwargs = {'action':'store', 'type': lambda x: x.decode(ENCODING), 'nargs':"*"}
+        kwargs = {'action':'store', 'type': unidecode, 'nargs':"*"}
 
         if trail in helps:
             kwargs['help'] = helps[trail]
@@ -387,7 +396,10 @@ def entrypoint(func):
             
             # --debug
             if kwargs.get('debug'):
-                logging.basicConfig(level=logging.DEBUG)
+                logging.basicConfig(
+                                    level=logging.DEBUG,
+                                    format='%(asctime)-6s: %(name)s - %(levelname)s - %(message)s',
+                                    )
             del kwargs['debug']
                             
             if "__args" in kwargs:
@@ -400,33 +412,33 @@ def entrypoint(func):
             
     return func
 
-def entrywithfile(*argspec, **kwspec):
-    """
-        A decorator for your main() function.
+#def entrywithfile(*argspec, **kwspec):
+#    """
+#        A decorator for your main() function.
+#
+#        Really a combination of @withfile, @autorun and @acceptargv, so will run
+#        the function if __name__ == '__main__' with arguments extricated from
+#        argparse, while opening some files
+#
+#        As with @acceptargv, this must either be the innermost decorator, or
+#        separated only by "well-behaved" decorators that preserve the __doc__
+#        attribute AND the function signature.
+#
+#        As with @autorun, this must be the outermost decorator, as any
+#        decorators further out will not be applied to the function until after
+#        it is run.
+#    """
+#    define_time = withuserfile(*argspec, **kwspec)
+#    return lambda func: autorun(acceptargv(define_time(func)),2)
 
-        Really a combination of @withfile, @autorun and @acceptargv, so will run
-        the function if __name__ == '__main__' with arguments extricated from
-        argparse, while opening some files
-
-        As with @acceptargv, this must either be the innermost decorator, or
-        separated only by "well-behaved" decorators that preserve the __doc__
-        attribute AND the function signature.
-
-        As with @autorun, this must be the outermost decorator, as any
-        decorators further out will not be applied to the function until after
-        it is run.
-    """
-    define_time = withuserfile(*argspec, **kwspec)
-    return lambda func: autorun(acceptargv(define_time(func)),2)
-
-def runwithfile(*argspec, **kwspec):
-    """
-        Runs the function is the module in which it is declared is being run directly
-        from the commandline and opens any files (particularly useful when
-        specified as default arguments to the function) that are passed in.
-    """
-    define_time = withfile(*argspec, **kwspec)
-    return lambda func: autorun(define_time(func),2)
+#def runwithfile(*argspec, **kwspec):
+#    """
+#        Runs the function is the module in which it is declared is being run directly
+#        from the commandline and opens any files (particularly useful when
+#        specified as default arguments to the function) that are passed in.
+#    """
+#    define_time = withfile(*argspec, **kwspec)
+#    return lambda func: autorun(define_time(func),2)
 
 def autorun(func, _depth=1):
     """
@@ -507,135 +519,135 @@ def acceptargv(func):
 
     return main
 
-def withuserfile(__encoding=None, *argspec, **kwspec):
-    """
-        Equivalent to withfile, but raises FileUsageError instead of IOError
-    """
-    define_time = withfile(__encoding, *argspec, **kwspec)
-    define_time.__usage_errors = True
-    return define_time
+#def withuserfile(__encoding=None, *argspec, **kwspec):
+#    """
+#        Equivalent to withfile, but raises FileUsageError instead of IOError
+#    """
+#    define_time = withfile(__encoding, *argspec, **kwspec)
+#    define_time.__usage_errors = True
+#    return define_time
 
-def withfile(__encoding=None, *argspec, **kwspec):
-    """
-        A decorator to open/close files in the correct encoding.
-
-        The first (unnamed) parameter may be the encoding you want to use,
-        but leave it blank and get utf8.
-
-        The remaining parameters must match the names of paramters to be 
-        passed to the function. 
-
-        @entrywithfile(frm='r', to='w')
-        def quick_copy(frm, to, verbose=False):
-            '''
-                Copies the contents of frm into to, providing they are UTF-8
-                encoded but copies no file attributes or anything.
-
-                frm: source file
-                to: destination file
-                --verbose -v: print a message
-            '''
-            to.write(frm.read())
-            if verbose:
-                print "Copied %s to %s" % (frm.name, to.name)
-
-    """
-    if __encoding is None:
-        __encoding = ENCODING
-    else:
-        try:
-            codecs.lookup(__encoding)
-        except LookupError:
-            argspec = (__encoding,) + argspec
-            __encoding = ENCODING
-
-    openfunction = {'r': lambda f,e: codecs.getreader(e)(sys.stdin) if f == "-" else codecs.open(f, 'r', e),
-                    'w': lambda f,e: codecs.getwriter(e)(sys.stdout) if f == "-" else codecs.open(f, 'w', e),
-                    'a': lambda f,e: codecs.getwriter(e)(sys.stdout) if f == "-" else codecs.open(f, 'a', e),
-                    'rb': lambda f,e: sys.stdin if f == "-" else open(f, 'rb'),
-                    'wb': lambda f,e: sys.stdout if f == "-" else open(f, 'wb'),
-                    'ab': lambda f,e: sys.stdout if f == "-" else open(f, 'ab')
-                    }
-
-    def realopen(spec, f, contexts):
-        """
-            Actually perform the open, and add the file to the list of contexts if it needs to be closed.
-        """
-        new = openfunction[spec](f, __encoding)
-        if f != "-":
-            contexts.append(new)
-        return new, contexts
-
-    def define_time(func):
-        """
-            Set up the call_time function below so that it will open files correctly.
-        """
-
-        args, trail, kwargs, defaults = inspect.getargspec(func)
-
-        if len(args) < len(argspec):
-            raise SpecError("withfile expected at most %s specs, got %s" % (len(args), len(argspec)))
-
-        specs = dict(zip(args, argspec))
-        check = set(specs.keys()) & set(kwspec.keys())
-
-        if check:
-            raise SpecError("withfile got multiple specs for keyword argument '%s'" % check.pop())
-        else:
-            kwspec.update(specs)
-
-        for kw in kwspec:
-            if not kwspec[kw] in openfunction:
-                raise SpecError("Badly formed spec, use one of: %s" % ", ".join(sorted(openfunction.keys())))
-            if not kw in args and not kwargs and not kw == trail:
-                raise SpecError("withfile got unexpected keyword spec '%s'" % kw)
-
-        def call_time(func, *passed, **kwpassed):
-            """
-                The function has actually been called, open all the files.
-                Note that default arguments will be opened and closed each time the function is entered.
-            """
-
-            if defaults:
-                passed = list(passed + defaults[len(passed) + len(defaults) - len(args):])
-            else:
-                passed = list(passed)
-            contexts = []
-
-            for kw in kwspec:
-                spec = kwspec[kw]
-                try:
-                    if kw in args:
-                        i = args.index(kw)
-                        passed[i], contexts = realopen(spec, passed[i], contexts)
-
-                    elif kw == trail:
-                        for i in range(len(args), len(passed)):
-                            passed[i], contexts = realopen(spec, passed[i], contexts)
-
-                    elif kw == kwargs:
-                        for kw in kwpassed:
-                            if not kw in args:
-                                kwpassed[kw], contexts = realopen(spec, kwpassed[kw], contexts)
-
-                    elif kw in kwpassed:
-                        kwpassed[kw], contexts = realopen(spec, kwpassed[kw], contexts)
-
-                except IOError, e:
-                    for fil in contexts:
-                        fil.close()
-
-                    if define_time.__usage_errors:
-                        raise FileUsageError(e)
-                    else:
-                        raise e
-
-            with nested(*contexts):
-                return func(*passed, **kwpassed)
-
-        return decorator(call_time, func)
-
-    define_time.__usage_errors = False
-    return define_time
+#def withfile(__encoding=None, *argspec, **kwspec):
+#    """
+#        A decorator to open/close files in the correct encoding.
+#
+#        The first (unnamed) parameter may be the encoding you want to use,
+#        but leave it blank and get utf8.
+#
+#        The remaining parameters must match the names of paramters to be 
+#        passed to the function. 
+#
+#        @entrywithfile(frm='r', to='w')
+#        def quick_copy(frm, to, verbose=False):
+#            '''
+#                Copies the contents of frm into to, providing they are UTF-8
+#                encoded but copies no file attributes or anything.
+#
+#                frm: source file
+#                to: destination file
+#                --verbose -v: print a message
+#            '''
+#            to.write(frm.read())
+#            if verbose:
+#                print "Copied %s to %s" % (frm.name, to.name)
+#
+#    """
+#    if __encoding is None:
+#        __encoding = ENCODING
+#    else:
+#        try:
+#            codecs.lookup(__encoding)
+#        except LookupError:
+#            argspec = (__encoding,) + argspec
+#            __encoding = ENCODING
+#
+#    openfunction = {'r': lambda f,e: codecs.getreader(e)(sys.stdin) if f == "-" else codecs.open(f, 'r', e),
+#                    'w': lambda f,e: codecs.getwriter(e)(sys.stdout) if f == "-" else codecs.open(f, 'w', e),
+#                    'a': lambda f,e: codecs.getwriter(e)(sys.stdout) if f == "-" else codecs.open(f, 'a', e),
+#                    'rb': lambda f,e: sys.stdin if f == "-" else open(f, 'rb'),
+#                    'wb': lambda f,e: sys.stdout if f == "-" else open(f, 'wb'),
+#                    'ab': lambda f,e: sys.stdout if f == "-" else open(f, 'ab')
+#                    }
+#
+#    def realopen(spec, f, contexts):
+#        """
+#            Actually perform the open, and add the file to the list of contexts if it needs to be closed.
+#        """
+#        new = openfunction[spec](f, __encoding)
+#        if f != "-":
+#            contexts.append(new)
+#        return new, contexts
+#
+#    def define_time(func):
+#        """
+#            Set up the call_time function below so that it will open files correctly.
+#        """
+#
+#        args, trail, kwargs, defaults = inspect.getargspec(func)
+#
+#        if len(args) < len(argspec):
+#            raise SpecError("withfile expected at most %s specs, got %s" % (len(args), len(argspec)))
+#
+#        specs = dict(zip(args, argspec))
+#        check = set(specs.keys()) & set(kwspec.keys())
+#
+#        if check:
+#            raise SpecError("withfile got multiple specs for keyword argument '%s'" % check.pop())
+#        else:
+#            kwspec.update(specs)
+#
+#        for kw in kwspec:
+#            if not kwspec[kw] in openfunction:
+#                raise SpecError("Badly formed spec, use one of: %s" % ", ".join(sorted(openfunction.keys())))
+#            if not kw in args and not kwargs and not kw == trail:
+#                raise SpecError("withfile got unexpected keyword spec '%s'" % kw)
+#
+#        def call_time(func, *passed, **kwpassed):
+#            """
+#                The function has actually been called, open all the files.
+#                Note that default arguments will be opened and closed each time the function is entered.
+#            """
+#
+#            if defaults:
+#                passed = list(passed + defaults[len(passed) + len(defaults) - len(args):])
+#            else:
+#                passed = list(passed)
+#            contexts = []
+#
+#            for kw in kwspec:
+#                spec = kwspec[kw]
+#                try:
+#                    if kw in args:
+#                        i = args.index(kw)
+#                        passed[i], contexts = realopen(spec, passed[i], contexts)
+#
+#                    elif kw == trail:
+#                        for i in range(len(args), len(passed)):
+#                            passed[i], contexts = realopen(spec, passed[i], contexts)
+#
+#                    elif kw == kwargs:
+#                        for kw in kwpassed:
+#                            if not kw in args:
+#                                kwpassed[kw], contexts = realopen(spec, kwpassed[kw], contexts)
+#
+#                    elif kw in kwpassed:
+#                        kwpassed[kw], contexts = realopen(spec, kwpassed[kw], contexts)
+#
+#                except IOError, e:
+#                    for fil in contexts:
+#                        fil.close()
+#
+#                    if define_time.__usage_errors:
+#                        raise FileUsageError(e)
+#                    else:
+#                        raise e
+#
+#            with nested(*contexts):
+#                return func(*passed, **kwpassed)
+#
+#        return decorator(call_time, func)
+#
+#    define_time.__usage_errors = False
+#    return define_time
 
 __all__ = ['UsageError', 'FileUsageError', 'acceptargv', 'argparse', 'autorun', 'entrypoint', 'entrywithfile', 'runwithfile', 'signature_parser', 'withfile', 'withuserfile']

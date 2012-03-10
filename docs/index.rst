@@ -12,7 +12,6 @@ Contents:
     entrypoint_readme
     usage
     api
-    dev
 
 Indices and tables
 ==================
