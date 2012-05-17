@@ -307,6 +307,18 @@ def signature_parser(func):
             kwargs['action'] = 'store_false'
         elif default is False:
             kwargs['action'] = 'store_true'
+        elif isinstance(default, list):
+            kwargs['action'] = 'append'
+#  default is not working
+#            if len(default):
+#                first = default[0]
+#                if type(first) in [type(None), unicode]:
+#                    kwargs['type'] = unidecode
+#                else:
+#                    kwargs['type'] = type(first)
+#                kwargs['default'] = []
+#            else:
+            kwargs['type'] = unidecode
         else:
             kwargs['action'] = 'store'
             if type(default) in [type(None), unicode]:
