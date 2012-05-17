@@ -14,10 +14,11 @@ __version__ = '0.0.5'
     This is a library of decorators designed for writing scripts quickly. This
     means they are not the most sustainable tools that exist, but they do what
     they do well, and with minimal fuss. If you want additional features, you
-    are likely to have more fun if you stop being lazy and using this library :p.
+    are likely to have more fun if you stop being lazy and using
+    this library :p.
 
     Everything here uses unicode strings, and opens files for unicode access.
-    You can change the ENCODING property of this module from "utf8" if you 
+    You can change the ENCODING property of this module from "utf8" if you
     need to.
 
     There are three core parts of functionality:
@@ -57,7 +58,7 @@ __version__ = '0.0.5'
 """
 
 
-ENCODING='utf8'
+ENCODING = 'utf8'
 
 PY3 = sys.version_info[0] >= 3
 
@@ -68,25 +69,28 @@ def unidecode(x):
     else:
         return x.decode(ENCODING)
 
+
 def module_version(func):
-    version= None
+    version = None
     for v in '__version__ VERSION version'.split():
         version = func.func_globals.get(v)
         if version:
             break
     return version
 
+
 class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
     def __init__(self, *args, **kwargs):
-        super(ParagraphPreservingArgParseFormatter, self).__init__(*args, **kwargs)
+        super(ParagraphPreservingArgParseFormatter,
+              self).__init__(*args, **kwargs)
         self._long_break_matcher = argparse._re.compile(r'\n\n+')
 
     def _fill_text(self, text, width, indent):
         output = []
         for block in self._long_break_matcher.split(text.strip()):
-            output.append(argparse._textwrap.fill(block, width, initial_indent=indent, subsequent_indent=indent))
+            output.append(argparse._textwrap.fill(block, width,
+                initial_indent=indent, subsequent_indent=indent))
         return "\n\n".join(output + [''])
-
 
 
 class UsageError(Exception):
@@ -100,6 +104,7 @@ class UsageError(Exception):
         self.message = message
     pass
 
+
 class FileUsageError(UsageError):
 
     def __init__(self, e):
@@ -109,15 +114,18 @@ class FileUsageError(UsageError):
         super(Exception, self).__init__(e)
         self.message = "%s: '%s'" % (e.strerror, e.filename)
 
+
 class SpecError(TypeError):
     """
         Used for define-time errors with withfile specs.
     """
     pass
 
+
 def _parse_doc(docs):
     """
-        Converts a well-formed docstring into documentation to be fed into argparse.
+        Converts a well-formed docstring into documentation
+        to be fed into argparse.
 
         See signature_parser for details.
 
@@ -131,14 +139,15 @@ def _parse_doc(docs):
     name = "(?:[a-zA-Z][a-zA-Z0-9-_]*)"
 
     re_var = re.compile(r"^ *(%s)(?: */(%s))? *:(.*)$" % (name, name))
-    re_opt = re.compile(r"^ *(?:(-[a-zA-Z0-9]),? +)?--(%s)(?: *=(%s))? *:(.*)$" % (name, name))
+    re_opt = re.compile(r"^ *(?:(-[a-zA-Z0-9]),? +)?--(%s)(?: *=(%s))? *:(.*)$"
+                        % (name, name))
 
     shorts, metavars, helps, description, epilog = {}, {}, {}, "", ""
 
     if docs:
 
         for line in docs.split("\n"):
-            
+
             line = line.strip()
 
             #remove starting ':param'
@@ -194,7 +203,6 @@ def _parse_doc(docs):
             if line.strip():
                 previndent = len(line) - len(line.lstrip())
 
-
     return shorts, metavars, helps, description, epilog
 
 
@@ -224,8 +232,10 @@ def signature_parser(func):
             A short introduction to your program.
 
                 arg: Help for positional parameter.
-                frm/from: Help for a positional parameter with a reserved public name (i.e.
-                          this displays to the user as "from" but sets the "frm" variable)
+                frm/from: Help for a positional parameter
+                          with a reserved public name
+                          (i.e. this displays to the user as "from"
+                          but sets the "frm" variable)
                 --opt: Help for optional parameter.
                 -f --flag: An optional parameter that has a short version.
                 --mode=MODE: An optional parameter that takes a MODE
@@ -246,8 +256,8 @@ def signature_parser(func):
         NOTE: for this to work, the function's signature must be in-tact
               some decorators (like @acceptargv for example) destroy, or
               mutilate the signature.
-    """ 
-        
+    """
+
     args, trail, kwargs, defaults = inspect.getargspec(func)
 
     if not args:
@@ -260,46 +270,49 @@ def signature_parser(func):
         raise Exception("Can't wrap a function with **kwargs")
 
     # Compulsary positional options
-    needed = args[0:len(args)-len(defaults)]
+    needed = args[0:len(args) - len(defaults)]
 
     # Optional flag options
     params = args[len(needed):]
 
     shorts, metavars, helps, description, epilog = _parse_doc(func.__doc__)
 
-    parser = argparse.ArgumentParser(description=description, epilog=epilog, formatter_class=ParagraphPreservingArgParseFormatter)
+    parser = argparse.ArgumentParser(
+                 description=description,
+                 epilog=epilog,
+                 formatter_class=ParagraphPreservingArgParseFormatter)
 
     # special flags
-    special_flags=[]
-    
+    special_flags = []
+
     special_flags += ['debug']
     defaults += (False,)
     helps['debug'] = 'set logging level to DEBUG'
     if module_version(func):
         special_flags += ['version']
         defaults += (False,)
-        helps['version']="show program's version number and exit"
+        helps['version'] = "show program's version number and exit"
     params += special_flags
-    
+
     # Optional flag options
     used_shorts = set()
-    for param,default in zip(params, defaults):
+    for param, default in zip(params, defaults):
         args = ["--%s" % param.replace("_", "-")]
-        short=None
+        short = None
         if param in shorts:
             short = shorts[param]
         else:
-            if param not in special_flags and len(param)>1:
-                first_char=param[0]
+            if param not in special_flags and len(param) > 1:
+                first_char = param[0]
                 if first_char not in used_shorts:
                     used_shorts.add(first_char)
                     short = '-' + first_char
         # -h conflicts with 'help'
-        if short and short != '-h': 
+        if short and short != '-h':
             args = [short] + args
 
         kwargs = {'default': default, 'dest': param.replace("-", "_")}
-        
+
         if param == 'version':
             kwargs['action'] = 'version'
             kwargs['version'] = module_version(func)
@@ -351,7 +364,7 @@ def signature_parser(func):
 
     # The trailing arguments
     if trail:
-        kwargs = {'action':'store', 'type': unidecode, 'nargs':"*"}
+        kwargs = {'action': 'store', 'type': unidecode, 'nargs': "*"}
 
         if trail in helps:
             kwargs['help'] = helps[trail]
@@ -362,8 +375,9 @@ def signature_parser(func):
             kwargs['metavar'] = trail
 
         parser.add_argument('__args', **kwargs)
-        
+
     return parser
+
 
 def _correct_args(func, kwargs):
     """
@@ -373,11 +387,12 @@ def _correct_args(func, kwargs):
     args = inspect.getargspec(func)[0]
     return [kwargs[arg] for arg in args] + kwargs['__args']
 
+
 def entrypoint(func):
     """
         A decorator for your main() function.
 
-        Really a combination of @autorun and @acceptargv, so will run the 
+        Really a combination of @autorun and @acceptargv, so will run the
         function if __name__ == '__main__' with arguments extricated from
         argparse.
 
@@ -388,7 +403,7 @@ def entrypoint(func):
         As with @autorun, this must be theoutermost decorator, as any
         decorators further out will not be applied to the function until after
         it is run.
-    """ 
+    """
     frame_local = sys._getframe(1).f_locals
     if '__name__' in frame_local and frame_local['__name__'] == '__main__':
         argv = sys.argv[1:]
@@ -396,32 +411,33 @@ def entrypoint(func):
         parser = signature_parser(func)
         try:
             kwargs = parser.parse_args(argv).__dict__
-            
+
             # special cli flags
-            
+
             # --version is handled by ArgParse
             #if kwargs.get('version'):
             #    print module_version(func)
             #    return
             if 'version' in kwargs.keys():
                 del kwargs['version']
-            
+
             # --debug
+            FORMAT = '%(asctime)-6s: %(name)s - %(levelname)s - %(message)s'
             if kwargs.get('debug'):
                 logging.basicConfig(
-                                    level=logging.DEBUG,
-                                    format='%(asctime)-6s: %(name)s - %(levelname)s - %(message)s',
-                                    )
+                    level=logging.DEBUG,
+                    format=FORMAT,
+                    )
             del kwargs['debug']
-                            
+
             if "__args" in kwargs:
                 return func(*_correct_args(func, kwargs))
             else:
                 return func(**kwargs)
-            
+
         except UsageError, e:
             parser.error(e.message)
-            
+
     return func
 
 #def entrywithfile(*argspec, **kwspec):
@@ -452,6 +468,7 @@ def entrypoint(func):
 #    define_time = withfile(*argspec, **kwspec)
 #    return lambda func: autorun(define_time(func),2)
 
+
 def autorun(func, _depth=1):
     """
         Runs the function if the module in which it is declared is being run
@@ -463,14 +480,15 @@ def autorun(func, _depth=1):
 
         NOTE: This will work most expectedly as the outermost decorator, as it
         will call the function before any more outwards decorators have been
-        applied. 
+        applied.
     """
 
     frame_local = sys._getframe(_depth).f_locals
     if '__name__' in frame_local and frame_local['__name__'] == '__main__':
-        func(argv = sys.argv[1:])
+        func(argv=sys.argv[1:])
 
     return func
+
 
 def acceptargv(func):
     """
@@ -495,35 +513,34 @@ def acceptargv(func):
     parser = signature_parser(func)
 
     def main(*args, **kw):
-        argv=kw.get('argv', None)
+        argv = kw.get('argv', None)
         if argv == None:
             return func(*args, **kw)
         else:
             try:
                 kwargs = parser.parse_args(argv).__dict__
-                
+
                 # special cli flags
-                
+
                 # --version is handled by ArgParse
                 #if kwargs.get('version'):
                 #    print module_version(func)
                 #    return
                 if 'version' in kwargs.keys():
                     del kwargs['version']
-                
+
                 # --debug
                 if kwargs.get('debug'):
                     logging.basicConfig(level=logging.DEBUG)
                 del kwargs['debug']
-                    
-                
+
                 if "__args" in kwargs:
                     return func(*_correct_args(func, kwargs))
                 else:
                     return func(**kwargs)
             except UsageError, e:
                 parser.error(e.message)
-    
+
     main.__doc__ = func.__doc__
     main.__name__ = func.__name__
     main.__module__ = func.__module__
@@ -662,4 +679,6 @@ def acceptargv(func):
 #    define_time.__usage_errors = False
 #    return define_time
 
-__all__ = ['UsageError', 'FileUsageError', 'acceptargv', 'argparse', 'autorun', 'entrypoint', 'entrywithfile', 'runwithfile', 'signature_parser', 'withfile', 'withuserfile']
+__all__ = ['UsageError', 'FileUsageError', 'acceptargv', 'argparse',
+           'autorun', 'entrypoint', 'entrywithfile', 'runwithfile',
+           'signature_parser', 'withfile', 'withuserfile']
