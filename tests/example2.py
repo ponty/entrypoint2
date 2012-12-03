@@ -1,9 +1,10 @@
 from entrypoint2 import entrypoint
 import logging
 
-VERSION='1.2'
+VERSION = '1.2'
+
 
 @entrypoint
-def f(x,y): 
+def f(x, y):
     logging.debug(x)
-    return x+y            
+    return x + y

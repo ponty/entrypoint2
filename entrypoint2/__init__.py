@@ -1,5 +1,5 @@
 from __future__ import with_statement
-#from contextlib import nested
+# from contextlib import nested
 from decorator import decorator
 import argparse
 import codecs
@@ -89,7 +89,7 @@ class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
         output = []
         for block in self._long_break_matcher.split(text.strip()):
             output.append(argparse._textwrap.fill(block, width,
-                initial_indent=indent, subsequent_indent=indent))
+                                                  initial_indent=indent, subsequent_indent=indent))
         return "\n\n".join(output + [''])
 
 
@@ -150,11 +150,11 @@ def _parse_doc(docs):
 
             line = line.strip()
 
-            #remove starting ':param'
+            # remove starting ':param'
             if line.startswith(':param'):
                 line = line[len(':param'):]
 
-            #skip ':rtype:' row
+            # skip ':rtype:' row
             if line.startswith(':rtype:'):
                 continue
 
@@ -278,9 +278,9 @@ def signature_parser(func):
     shorts, metavars, helps, description, epilog = _parse_doc(func.__doc__)
 
     parser = argparse.ArgumentParser(
-                 description=description,
-                 epilog=epilog,
-                 formatter_class=ParagraphPreservingArgParseFormatter)
+        description=description,
+        epilog=epilog,
+        formatter_class=ParagraphPreservingArgParseFormatter)
 
     # special flags
     special_flags = []
@@ -415,7 +415,7 @@ def entrypoint(func):
             # special cli flags
 
             # --version is handled by ArgParse
-            #if kwargs.get('version'):
+            # if kwargs.get('version'):
             #    print module_version(func)
             #    return
             if 'version' in kwargs.keys():
@@ -427,7 +427,7 @@ def entrypoint(func):
                 logging.basicConfig(
                     level=logging.DEBUG,
                     format=FORMAT,
-                    )
+                )
             del kwargs['debug']
 
             if "__args" in kwargs:
@@ -440,7 +440,7 @@ def entrypoint(func):
 
     return func
 
-#def entrywithfile(*argspec, **kwspec):
+# def entrywithfile(*argspec, **kwspec):
 #    """
 #        A decorator for your main() function.
 #
@@ -459,7 +459,7 @@ def entrypoint(func):
 #    define_time = withuserfile(*argspec, **kwspec)
 #    return lambda func: autorun(acceptargv(define_time(func)),2)
 
-#def runwithfile(*argspec, **kwspec):
+# def runwithfile(*argspec, **kwspec):
 #    """
 #        Runs the function is the module in which it is declared is being run directly
 #        from the commandline and opens any files (particularly useful when
@@ -523,7 +523,7 @@ def acceptargv(func):
                 # special cli flags
 
                 # --version is handled by ArgParse
-                #if kwargs.get('version'):
+                # if kwargs.get('version'):
                 #    print module_version(func)
                 #    return
                 if 'version' in kwargs.keys():
@@ -548,7 +548,7 @@ def acceptargv(func):
 
     return main
 
-#def withuserfile(__encoding=None, *argspec, **kwspec):
+# def withuserfile(__encoding=None, *argspec, **kwspec):
 #    """
 #        Equivalent to withfile, but raises FileUsageError instead of IOError
 #    """
@@ -556,15 +556,15 @@ def acceptargv(func):
 #    define_time.__usage_errors = True
 #    return define_time
 
-#def withfile(__encoding=None, *argspec, **kwspec):
+# def withfile(__encoding=None, *argspec, **kwspec):
 #    """
 #        A decorator to open/close files in the correct encoding.
 #
 #        The first (unnamed) parameter may be the encoding you want to use,
 #        but leave it blank and get utf8.
 #
-#        The remaining parameters must match the names of paramters to be 
-#        passed to the function. 
+#        The remaining parameters must match the names of paramters to be
+#        passed to the function.
 #
 #        @entrywithfile(frm='r', to='w')
 #        def quick_copy(frm, to, verbose=False):

@@ -24,19 +24,19 @@ project = 'entrypoint2'
 author = 'ponty'
 copyright = '2011, ponty'
 
-#logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 # Extension
 extensions = [
-     # -*-Extensions: -*-
-     'sphinx.ext.autodoc',
-     'sphinxcontrib.programoutput',
-     #'sphinxcontrib.programscreenshot',
-     #'sphinx.ext.graphviz',
-     'sphinxcontrib.autorun',
-     #'sphinx.ext.autosummary',
-     #'sphinx.ext.intersphinx',
-    ]
+    # -*-Extensions: -*-
+    'sphinx.ext.autodoc',
+    'sphinxcontrib.programoutput',
+    #'sphinxcontrib.programscreenshot',
+    #'sphinx.ext.graphviz',
+    'sphinxcontrib.autorun',
+    #'sphinx.ext.autosummary',
+    #'sphinx.ext.intersphinx',
+]
 intersphinx_mapping = {'http://docs.python.org/': None}
 
 # Source
@@ -56,15 +56,15 @@ htmlhelp_basename = '%sdoc' % project
 # latex build settings
 latex_documents = [
     ('index', '%s.tex' % project, u'%s Documentation' % project,
-    author, 'manual'),
+     author, 'manual'),
 ]
 
 
 # remove blank pages from pdf
-# http://groups.google.com/group/sphinx-dev/browse_thread/thread/92e19267d095412d/d60dcba483c6b13d
-latex_font_size = '10pt,oneside' 
+# http://groups.google.com/group/sphinx-
+# dev/browse_thread/thread/92e19267d095412d/d60dcba483c6b13d
+latex_font_size = '10pt,oneside'
 
-latex_elements=dict(
-                    papersize='a4paper',
-                    )
- 
+latex_elements = dict(
+    papersize='a4paper',
+)
