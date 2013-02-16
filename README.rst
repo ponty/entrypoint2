@@ -45,6 +45,7 @@ Similar projects:
  * `commando (2) <https://github.com/lakshmivyas/commando>`_
  * argparse_
  * `optparse <http://docs.python.org/library/optparse.html>`_   
+ * plumbum (https://github.com/tomerfiliba/plumbum)
 
 Basic usage
 ============
