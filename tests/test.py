@@ -2,12 +2,14 @@ from easyprocess import Proc
 from nose.tools import eq_, ok_
 from unittest import TestCase
 import os.path
+import sys
 
 d = os.path.dirname(__file__)
 example1_py = os.path.join(d, 'example1.py')
 example2_py = os.path.join(d, 'example2.py')
 example3_py = os.path.join(d, 'example3.py')
 
+PY3 = sys.version_info[0] >= 3
 
 def test_1_call():
     import example1
@@ -81,15 +83,23 @@ def test_3_cli():
 def test_1_ver():
     cmd = 'python %s --version' % example1_py
     p = Proc(cmd).call()
-    eq_(p.stdout, '')
-    eq_(p.stderr, '3.2')
+    if PY3:
+        eq_(p.stderr, '')
+        eq_(p.stdout, '3.2')
+    else:
+        eq_(p.stdout, '')
+        eq_(p.stderr, '3.2')
     eq_(p.return_code, 0)
 
 def test_2_ver():
     cmd = 'python %s --version' % example2_py
     p = Proc(cmd).call()
-    eq_(p.stdout, '')
-    eq_(p.stderr, '1.2')
+    if PY3:
+        eq_(p.stderr, '')
+        eq_(p.stdout, '1.2')
+    else:
+        eq_(p.stdout, '')
+        eq_(p.stderr, '1.2')
     eq_(p.return_code, 0)
 
 def test_3_ver():
