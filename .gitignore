@@ -30,3 +30,4 @@ sloccount.sc
 .*
 !.gitignore
 
+*.log
