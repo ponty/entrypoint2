@@ -2,6 +2,7 @@ from __future__ import with_statement
 # from contextlib import nested
 from decorator import decorator
 import argparse
+import textwrap
 import codecs
 import inspect
 import re
@@ -88,7 +89,7 @@ class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
     def _fill_text(self, text, width, indent):
         output = []
         for block in self._long_break_matcher.split(text.strip()):
-            output.append(argparse._textwrap.fill(block, width,
+            output.append(textwrap.fill(block, width,
                                                   initial_indent=indent, subsequent_indent=indent))
         return "\n\n".join(output + [''])
 
