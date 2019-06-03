@@ -26,7 +26,7 @@ Features:
  - automatic ``--debug`` flag, which turns on logging 
  - short flags are generated from long flags automatically (e.g. ``--parameter`` -> ``-p``) 
  - unit tests
- - supported python versions: 2.7, 3.4, 3.5, 3.6
+ - supported python versions: 2.7, 3.4, 3.5, 3.6, 3.7
  - support for repeating arguments
  
 Known problems:
