@@ -9,7 +9,6 @@ import re
 import sys
 import logging
 
-__version__ = '0.0.6'
 
 """
     This is a library of decorators designed for writing scripts quickly. This
