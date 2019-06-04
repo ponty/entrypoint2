@@ -18,7 +18,7 @@ install:
  
 script:  
  - cd tests
- - nosetests -v --with-coverage --cover-package=entrypoint2 coverage
+ - nosetests -v --with-coverage --cover-package=entrypoint2 .
  
 after_success:
  - coveralls
