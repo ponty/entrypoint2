@@ -1,6 +1,5 @@
 from easyprocess import Proc
 from nose.tools import eq_, ok_
-from unittest import TestCase
 from path import Path
 import sys
 
