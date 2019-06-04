@@ -5,7 +5,10 @@ It translates function signature and documentation to argparse_ configuration.
 Links:
 
  * home: https://github.com/ponty/entrypoint2
- * documentation: http://ponty.github.com/entrypoint2
+ * documentation: http://entrypoint2.readthedocs.org
+ * PYPI: https://pypi.python.org/pypi/entrypoint2
+
+|Travis| |Coveralls| |Latest Version| |Supported Python versions| |License| |Documentation|
 
 Goals:
 
@@ -28,9 +31,6 @@ Features:
  - unit tests
  - supported python versions: 2.7, 3.4, 3.5, 3.6, 3.7
  - support for repeating arguments
- 
-Known problems:
- - None. 
 
 Similar projects:
 
@@ -90,27 +90,31 @@ Printing version::
 Installation
 ============
 
-General:
+install::
 
- * install pip_
- * install the program::
-
-    # as root
     pip install entrypoint2
 
-Ubuntu::
+uninstall::
 
-    sudo apt-get install python-pip
-    sudo pip install entrypoint2
-
-Uninstall::
-
-    # as root
     pip uninstall entrypoint2
 
 
-.. _setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall
-.. _pip: http://pip.openplans.org/
 .. _entrypoint: http://pypi.python.org/pypi/entrypoint/
 .. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
 .. _argparse: http://docs.python.org/dev/library/argparse.html
+
+.. |Travis| image:: http://img.shields.io/travis/ponty/entrypoint2.svg
+   :target: https://travis-ci.org/ponty/entrypoint2/
+.. |Coveralls| image:: http://img.shields.io/coveralls/ponty/entrypoint2/master.svg
+   :target: https://coveralls.io/r/ponty/entrypoint2/
+.. |Latest Version| image:: https://img.shields.io/pypi/v/entrypoint2.svg
+   :target: https://pypi.python.org/pypi/entrypoint2/
+.. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/entrypoint2.svg
+   :target: https://pypi.python.org/pypi/entrypoint2/
+.. |License| image:: https://img.shields.io/pypi/l/entrypoint2.svg
+   :target: https://pypi.python.org/pypi/entrypoint2/
+.. |Code Health| image:: https://landscape.io/github/ponty/entrypoint2/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/ponty/entrypoint2/master
+.. |Documentation| image:: https://readthedocs.org/projects/pyscreenshot/badge/?version=latest
+   :target: http://entrypoint2.readthedocs.org
+
