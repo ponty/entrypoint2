@@ -2,3 +2,4 @@ tox
 nose
 coverage
 path.py
+easyprocess
