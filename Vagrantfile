@@ -82,7 +82,7 @@ Vagrant.configure(2) do |config|
 # tools
 sudo apt-get install -y mc 
 sudo apt-get install -y python-pip 
-sudo apt-get install -y python-pip3
+sudo apt-get install -y python3-pip
 
 # test dependencies
   sudo pip install -r /vagrant/requirements-test.txt
