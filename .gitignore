@@ -29,5 +29,6 @@ sloccount.sc
 
 .*
 !.gitignore
+!.travis.yml
 
 *.log
