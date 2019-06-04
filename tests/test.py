@@ -1,13 +1,13 @@
 from easyprocess import Proc
 from nose.tools import eq_, ok_
 from unittest import TestCase
-import os.path
+from path import Path
 import sys
 
-d = os.path.dirname(__file__)
-example1_py = os.path.join(d, 'example1.py')
-example2_py = os.path.join(d, 'example2.py')
-example3_py = os.path.join(d, 'example3.py')
+d = Path(__file__).parent
+example1_py = d / 'example1.py'
+example2_py = d / 'example2.py'
+example3_py = d / 'example3.py'
 
 PY3 = sys.version_info[0] >= 3
 
