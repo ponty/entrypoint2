@@ -1,22 +1,14 @@
-**entrypoint2**
+===========
+entrypoint2
+===========
 
-:Date: |today|
-:PDF: `entrypoint2.pdf <entrypoint2.pdf>`_
 
-Contents:
 
-.. toctree::
-    :maxdepth: 2
+About
+=====
 
-    readme
-    entrypoint_readme
-    usage
-    api
 
-Indices and tables
-==================
+.. include:: ../README.rst
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. include:: api.rst
 
