@@ -13,7 +13,7 @@ Links:
 Goals:
 
  - simplicity: only one decorator to add to existing code
- 
+
 Features:
 
  - good for protoyping or simple CLI
@@ -36,7 +36,7 @@ Similar projects:
 
  * `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_
  * `plac  <http://micheles.googlecode.com/hg/plac/doc/plac.html>`_
- * `baker <http://bitbucket.org/mchaput/baker>`_   
+ * `baker <http://bitbucket.org/mchaput/baker>`_
  * `argh <http://packages.python.org/argh/>`_
  * `opster <http://pypi.python.org/pypi/opster/>`_
  * `commandline <http://pypi.python.org/pypi/commandline>`_
@@ -44,8 +44,8 @@ Similar projects:
  * `commando (1) <http://freshmeat.net/projects/commando>`_
  * `commando (2) <https://github.com/lakshmivyas/commando>`_
  * argparse_
- * `optparse <http://docs.python.org/library/optparse.html>`_   
- * plumbum (https://github.com/tomerfiliba/plumbum)
+ * `optparse <http://docs.python.org/library/optparse.html>`_
+ * `plumbum <https://github.com/tomerfiliba/plumbum>`_
 
 Basic usage
 ============
