@@ -32,3 +32,4 @@ sloccount.sc
 !.travis.yml
 
 *.log
+docs/api/*
