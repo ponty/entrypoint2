@@ -1,14 +1,17 @@
 language: python
 python:
  - "2.7"
- - "3.5"
  - "3.6"
 
 matrix:
   include:
-    - python: 3.7
-      dist: xenial
-      env: DIST="xenial"
+    - name: 3.7_bionic
+      python: 3.7
+      dist: bionic
+
+    - name: 3.8_bionic
+      python: 3.8
+      dist: bionic
 
 install:
  - pip install coveralls
