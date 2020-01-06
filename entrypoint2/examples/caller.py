@@ -12,4 +12,4 @@ def f():
     s = hello.add(7, 2)
 
     logging.debug('logging sum from caller.py:' + s)
-    print 'printing sum from caller.py:', s
+    print('printing sum from caller.py:' + s)

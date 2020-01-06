@@ -15,6 +15,6 @@ def add(one, two=4, three=False):
     s = str(int(one) + int(two))
 
     logging.debug('logging sum from hello.py:' + s)
-    print 'printing sum from hello.py:', s
+    print('printing sum from hello.py:' + s)
 
     return s

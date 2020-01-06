@@ -435,7 +435,7 @@ def entrypoint(func):
             else:
                 return func(**kwargs)
 
-        except UsageError, e:
+        except UsageError as e:
             parser.error(e.message)
 
     return func
@@ -538,7 +538,7 @@ def acceptargv(func):
                     return func(*_correct_args(func, kwargs))
                 else:
                     return func(**kwargs)
-            except UsageError, e:
+            except UsageError as e:
                 parser.error(e.message)
 
     main.__doc__ = func.__doc__
