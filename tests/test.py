@@ -12,11 +12,13 @@ example3_py = d / 'example3.py'
 
 PY3 = sys.version_info[0] >= 3
 
+
 def test_1_call():
     import example1
     eq_(example1.f(3), 3)
     eq_('description' in example1.f.__doc__, True)
     eq_(example1.f.__name__, 'f')
+
 
 def test_2_call():
     import example2
@@ -24,45 +26,48 @@ def test_2_call():
     eq_(example2.f.__doc__, None)
     eq_(example2.f.__name__, 'f')
 
+
 def test_3_call():
     import example3
     eq_(example3.f(), 7)
     eq_(example3.f.__doc__, None)
     eq_(example3.f.__name__, 'f')
 
+
 def test_1_cli():
-    cmd = [python, example1_py, '5'] 
+    cmd = [python, example1_py, '5']
     p = Proc(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
-    cmd = [python, example1_py, '5', '--two', '7', '--debug'] 
+    cmd = [python, example1_py, '5', '--two', '7', '--debug']
     p = Proc(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
-    cmd = [python, example1_py, '5', '--three', '-t', '2', '--debug'] 
+    cmd = [python, example1_py, '5', '--three', '-t', '2', '--debug']
     p = Proc(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
-    cmd = [python, example1_py, '5', '-t', 'x' ]
+    cmd = [python, example1_py, '5', '-t', 'x']
     p = Proc(cmd).call()
     eq_(p.return_code > 0, 1)
     eq_(p.stdout, '')
     eq_(p.stderr != '', 1)
 
-    cmd = [python, example1_py, '-t', '1', '5', '--debug' ]
+    cmd = [python, example1_py, '-t', '1', '5', '--debug']
     p = Proc(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
+
 def test_2_cli():
-    cmd = [python,  example2_py, '5', '2'] 
+    cmd = [python,  example2_py, '5', '2']
     p = Proc(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
@@ -74,12 +79,14 @@ def test_2_cli():
     eq_(p.stdout, '')
     ok_('root - DEBUG - 5' in p.stderr)
 
+
 def test_3_cli():
-    cmd = [python, example3_py] 
+    cmd = [python, example3_py]
     p = Proc(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
+
 
 def test_1_ver():
     cmd = [python, example1_py, '--version']
@@ -92,6 +99,7 @@ def test_1_ver():
         eq_(p.stderr, '3.2')
     eq_(p.return_code, 0)
 
+
 def test_2_ver():
     cmd = [python, example2_py, '--version']
     p = Proc(cmd).call()
@@ -103,12 +111,14 @@ def test_2_ver():
         eq_(p.stderr, '1.2')
     eq_(p.return_code, 0)
 
+
 def test_3_ver():
     cmd = [python, example3_py, '--version']
     p = Proc(cmd).call()
     eq_(p.stdout, '')
     ok_(p.stderr)
-    ok_(p.return_code!=0)
+    ok_(p.return_code != 0)
+
 
 def test_1_help():
     cmd = [python, example1_py, '--help']
@@ -120,11 +130,13 @@ def test_1_help():
     eq_('-t' in p.stdout, 1)
     eq_('--three' in p.stdout, 1)
 
+
 def test_2_help():
     cmd = [python, example2_py, '--help']
     p = Proc(cmd).call()
     eq_(p.stderr, '')
     eq_(p.return_code, 0)
+
 
 def test_3_help():
     cmd = [python, example3_py, '--help']

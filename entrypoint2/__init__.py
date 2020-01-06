@@ -89,7 +89,7 @@ class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
         output = []
         for block in self._long_break_matcher.split(text.strip()):
             output.append(textwrap.fill(block, width,
-                                                  initial_indent=indent, subsequent_indent=indent))
+                                        initial_indent=indent, subsequent_indent=indent))
         return "\n\n".join(output + [''])
 
 
@@ -99,6 +99,7 @@ class UsageError(Exception):
         exception, the message will be printed to the user implying that it was
         their fault that things have gone horribly wrong.
     """
+
     def __init__(self, message):
         super(Exception, self).__init__(message)
         self.message = message
@@ -678,6 +679,7 @@ def acceptargv(func):
 #
 #    define_time.__usage_errors = False
 #    return define_time
+
 
 __all__ = ['UsageError', 'FileUsageError', 'acceptargv', 'argparse',
            'autorun', 'entrypoint', 'entrywithfile', 'runwithfile',
