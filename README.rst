@@ -66,7 +66,7 @@ Example::
 
 Generated help::
 
-	$ python -m entrypoint2.examples.hello --help
+	$ python3 -m entrypoint2.examples.hello --help
 	usage: hello.py [-h] [-t TWO] [--three] [--version] [--debug] one
 	
 	This function adds two number.
@@ -83,7 +83,7 @@ Generated help::
 
 Printing version::
 
-	$ python -m entrypoint2.examples.hello --version
+	$ python3 -m entrypoint2.examples.hello --version
 	3.2
 
 
@@ -93,11 +93,6 @@ Installation
 install::
 
     pip install entrypoint2
-
-uninstall::
-
-    pip uninstall entrypoint2
-
 
 .. _entrypoint: http://pypi.python.org/pypi/entrypoint/
 .. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
