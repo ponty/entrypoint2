@@ -73,7 +73,10 @@ def unidecode(x):
 def module_version(func):
     version = None
     for v in '__version__ VERSION version'.split():
-        version = func.func_globals.get(v)
+        if PY3:
+            version = func.__globals__.get(v)
+        else:
+            version = func.func_globals.get(v)
         if version:
             break
     return version
@@ -335,7 +338,7 @@ def signature_parser(func):
             kwargs['type'] = unidecode
         else:
             kwargs['action'] = 'store'
-            if type(default) in [type(None), unicode]:
+            if type(default) in [type(None), str if PY3 else unicode]:
                 kwargs['type'] = unidecode
             else:
                 kwargs['type'] = type(default)
