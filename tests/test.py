@@ -1,4 +1,4 @@
-from easyprocess import Proc
+from easyprocess import EasyProcess
 from nose.tools import eq_, ok_
 from path import Path
 import sys
@@ -36,31 +36,31 @@ def test_3_call():
 
 def test_1_cli():
     cmd = [python, example1_py, '5']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
     cmd = [python, example1_py, '5', '--two', '7', '--debug']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
     cmd = [python, example1_py, '5', '--three', '-t', '2', '--debug']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
     cmd = [python, example1_py, '5', '-t', 'x']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code > 0, 1)
     eq_(p.stdout, '')
     eq_(p.stderr != '', 1)
 
     cmd = [python, example1_py, '-t', '1', '5', '--debug']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
@@ -68,13 +68,13 @@ def test_1_cli():
 
 def test_2_cli():
     cmd = [python,  example2_py, '5', '2']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
 
     cmd = [python,  example2_py, '--debug', '5', '2']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     ok_('root - DEBUG - 5' in p.stderr)
@@ -82,7 +82,7 @@ def test_2_cli():
 
 def test_3_cli():
     cmd = [python, example3_py]
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.return_code, 0)
     eq_(p.stdout, '')
     eq_(p.stderr, '')
@@ -90,7 +90,7 @@ def test_3_cli():
 
 def test_1_ver():
     cmd = [python, example1_py, '--version']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     if PY3:
         eq_(p.stderr, '')
         eq_(p.stdout, '3.2')
@@ -102,7 +102,7 @@ def test_1_ver():
 
 def test_2_ver():
     cmd = [python, example2_py, '--version']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     if PY3:
         eq_(p.stderr, '')
         eq_(p.stdout, '1.2')
@@ -114,7 +114,7 @@ def test_2_ver():
 
 def test_3_ver():
     cmd = [python, example3_py, '--version']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.stdout, '')
     ok_(p.stderr)
     ok_(p.return_code != 0)
@@ -122,7 +122,7 @@ def test_3_ver():
 
 def test_1_help():
     cmd = [python, example1_py, '--help']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.stderr, '')
     eq_(p.return_code, 0)
     eq_('one' in p.stdout, 1)
@@ -133,13 +133,13 @@ def test_1_help():
 
 def test_2_help():
     cmd = [python, example2_py, '--help']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.stderr, '')
     eq_(p.return_code, 0)
 
 
 def test_3_help():
     cmd = [python, example3_py, '--help']
-    p = Proc(cmd).call()
+    p = EasyProcess(cmd).call()
     eq_(p.stderr, '')
     eq_(p.return_code, 0)
