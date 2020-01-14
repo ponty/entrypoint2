@@ -98,7 +98,7 @@ install::
 .. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
 .. _argparse: http://docs.python.org/dev/library/argparse.html
 
-.. |Travis| image:: http://img.shields.io/travis/ponty/entrypoint2.svg
+.. |Travis| image:: https://travis-ci.org/ponty/entrypoint2.svg?branch=master
    :target: https://travis-ci.org/ponty/entrypoint2/
 .. |Coveralls| image:: http://img.shields.io/coveralls/ponty/entrypoint2/master.svg
    :target: https://coveralls.io/r/ponty/entrypoint2/
