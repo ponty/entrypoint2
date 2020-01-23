@@ -1,11 +1,11 @@
 from __future__ import with_statement
+
 import argparse
-import textwrap
 import inspect
+import logging
 import re
 import sys
-import logging
-
+import textwrap
 
 """
     This is a library of decorators designed for writing scripts quickly. This

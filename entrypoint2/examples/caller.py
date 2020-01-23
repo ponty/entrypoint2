@@ -1,6 +1,7 @@
+import logging
+
 import hello
 from entrypoint2 import entrypoint
-import logging
 
 __version__ = '5.2'
 

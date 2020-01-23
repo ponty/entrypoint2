@@ -1,7 +1,8 @@
+import sys
+
 from easyprocess import EasyProcess
 from nose.tools import eq_, ok_
 from path import Path
-import sys
 
 python = sys.executable
 

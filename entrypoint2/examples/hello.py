@@ -1,5 +1,6 @@
-from entrypoint2 import entrypoint
 import logging
+
+from entrypoint2 import entrypoint
 
 __version__ = '3.2'
 

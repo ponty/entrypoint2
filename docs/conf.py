@@ -1,7 +1,6 @@
 import os
 import sys
 
-
 project = 'entrypoint2'
 author = 'ponty'
 copyright = '2011, ponty'
