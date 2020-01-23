@@ -55,7 +55,7 @@ import textwrap
 """
 
 
-ENCODING = 'utf8'
+ENCODING = "utf8"
 
 PY3 = sys.version_info[0] >= 3
 
@@ -69,7 +69,7 @@ def unidecode(x):
 
 def module_version(func):
     version = None
-    for v in '__version__ VERSION version'.split():
+    for v in "__version__ VERSION version".split():
         if PY3:
             version = func.__globals__.get(v)
         else:
@@ -81,16 +81,18 @@ def module_version(func):
 
 class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
     def __init__(self, *args, **kwargs):
-        super(ParagraphPreservingArgParseFormatter,
-              self).__init__(*args, **kwargs)
-        self._long_break_matcher = argparse._re.compile(r'\n\n+')
+        super(ParagraphPreservingArgParseFormatter, self).__init__(*args, **kwargs)
+        self._long_break_matcher = argparse._re.compile(r"\n\n+")
 
     def _fill_text(self, text, width, indent):
         output = []
         for block in self._long_break_matcher.split(text.strip()):
-            output.append(textwrap.fill(block, width,
-                                        initial_indent=indent, subsequent_indent=indent))
-        return "\n\n".join(output + [''])
+            output.append(
+                textwrap.fill(
+                    block, width, initial_indent=indent, subsequent_indent=indent
+                )
+            )
+        return "\n\n".join(output + [""])
 
 
 class UsageError(Exception):
@@ -106,7 +108,6 @@ class UsageError(Exception):
 
 
 class FileUsageError(UsageError):
-
     def __init__(self, e):
         """
             Convert an IOError into a UsageError.
@@ -138,8 +139,9 @@ def _parse_doc(docs):
     name = "(?:[a-zA-Z][a-zA-Z0-9-_]*)"
 
     re_var = re.compile(r"^ *(%s)(?: */(%s))? *:(.*)$" % (name, name))
-    re_opt = re.compile(r"^ *(?:(-[a-zA-Z0-9]),? +)?--(%s)(?: *=(%s))? *:(.*)$"
-                        % (name, name))
+    re_opt = re.compile(
+        r"^ *(?:(-[a-zA-Z0-9]),? +)?--(%s)(?: *=(%s))? *:(.*)$" % (name, name)
+    )
 
     shorts, metavars, helps, description, epilog = {}, {}, {}, "", ""
 
@@ -150,11 +152,11 @@ def _parse_doc(docs):
             line = line.strip()
 
             # remove starting ':param'
-            if line.startswith(':param'):
-                line = line[len(':param'):]
+            if line.startswith(":param"):
+                line = line[len(":param") :]
 
             # skip ':rtype:' row
-            if line.startswith(':rtype:'):
+            if line.startswith(":rtype:"):
                 continue
 
             if line.strip() == "----":
@@ -269,28 +271,29 @@ def signature_parser(func):
         raise Exception("Can't wrap a function with **kwargs")
 
     # Compulsary positional options
-    needed = args[0:len(args) - len(defaults)]
+    needed = args[0 : len(args) - len(defaults)]
 
     # Optional flag options
-    params = args[len(needed):]
+    params = args[len(needed) :]
 
     shorts, metavars, helps, description, epilog = _parse_doc(func.__doc__)
 
     parser = argparse.ArgumentParser(
         description=description,
         epilog=epilog,
-        formatter_class=ParagraphPreservingArgParseFormatter)
+        formatter_class=ParagraphPreservingArgParseFormatter,
+    )
 
     # special flags
     special_flags = []
 
-    special_flags += ['debug']
+    special_flags += ["debug"]
     defaults += (False,)
-    helps['debug'] = 'set logging level to DEBUG'
+    helps["debug"] = "set logging level to DEBUG"
     if module_version(func):
-        special_flags += ['version']
+        special_flags += ["version"]
         defaults += (False,)
-        helps['version'] = "show program's version number and exit"
+        helps["version"] = "show program's version number and exit"
     params += special_flags
 
     # Optional flag options
@@ -305,54 +308,54 @@ def signature_parser(func):
                 first_char = param[0]
                 if first_char not in used_shorts:
                     used_shorts.add(first_char)
-                    short = '-' + first_char
+                    short = "-" + first_char
         # -h conflicts with 'help'
-        if short and short != '-h':
+        if short and short != "-h":
             args = [short] + args
 
-        kwargs = {'default': default, 'dest': param.replace("-", "_")}
+        kwargs = {"default": default, "dest": param.replace("-", "_")}
 
-        if param == 'version':
-            kwargs['action'] = 'version'
-            kwargs['version'] = module_version(func)
+        if param == "version":
+            kwargs["action"] = "version"
+            kwargs["version"] = module_version(func)
         elif default is True:
-            kwargs['action'] = 'store_false'
+            kwargs["action"] = "store_false"
         elif default is False:
-            kwargs['action'] = 'store_true'
+            kwargs["action"] = "store_true"
         elif isinstance(default, list):
-            kwargs['action'] = 'append'
-#  default is not working
-#            if len(default):
-#                first = default[0]
-#                if type(first) in [type(None), unicode]:
-#                    kwargs['type'] = unidecode
-#                else:
-#                    kwargs['type'] = type(first)
-#                kwargs['default'] = []
-#            else:
-            kwargs['type'] = unidecode
+            kwargs["action"] = "append"
+            #  default is not working
+            #            if len(default):
+            #                first = default[0]
+            #                if type(first) in [type(None), unicode]:
+            #                    kwargs['type'] = unidecode
+            #                else:
+            #                    kwargs['type'] = type(first)
+            #                kwargs['default'] = []
+            #            else:
+            kwargs["type"] = unidecode
         else:
-            kwargs['action'] = 'store'
+            kwargs["action"] = "store"
             if type(default) in [type(None), str if PY3 else unicode]:
-                kwargs['type'] = unidecode
+                kwargs["type"] = unidecode
             else:
-                kwargs['type'] = type(default)
+                kwargs["type"] = type(default)
 
         if param in helps:
-            kwargs['help'] = helps[param]
+            kwargs["help"] = helps[param]
 
         if param in metavars:
-            kwargs['metavar'] = metavars[param]
+            kwargs["metavar"] = metavars[param]
 
         parser.add_argument(*args, **kwargs)
 
     # Compulsary positional options
     for need in needed:
 
-        kwargs = {'action': 'store', 'type': unidecode}
+        kwargs = {"action": "store", "type": unidecode}
 
         if need in helps:
-            kwargs['help'] = helps[need]
+            kwargs["help"] = helps[need]
 
         if need in shorts:
             args = [shorts[need]]
@@ -363,17 +366,17 @@ def signature_parser(func):
 
     # The trailing arguments
     if trail:
-        kwargs = {'action': 'store', 'type': unidecode, 'nargs': "*"}
+        kwargs = {"action": "store", "type": unidecode, "nargs": "*"}
 
         if trail in helps:
-            kwargs['help'] = helps[trail]
+            kwargs["help"] = helps[trail]
 
         if trail in shorts:
-            kwargs['metavar'] = shorts[trail]
+            kwargs["metavar"] = shorts[trail]
         else:
-            kwargs['metavar'] = trail
+            kwargs["metavar"] = trail
 
-        parser.add_argument('__args', **kwargs)
+        parser.add_argument("__args", **kwargs)
 
     return parser
 
@@ -384,7 +387,7 @@ def _correct_args(func, kwargs):
         for passing to the function.
     """
     args = inspect.getargspec(func)[0]
-    return [kwargs[arg] for arg in args] + kwargs['__args']
+    return [kwargs[arg] for arg in args] + kwargs["__args"]
 
 
 def entrypoint(func):
@@ -404,7 +407,7 @@ def entrypoint(func):
         it is run.
     """
     frame_local = sys._getframe(1).f_locals
-    if '__name__' in frame_local and frame_local['__name__'] == '__main__':
+    if "__name__" in frame_local and frame_local["__name__"] == "__main__":
         argv = sys.argv[1:]
 
         parser = signature_parser(func)
@@ -417,17 +420,16 @@ def entrypoint(func):
             # if kwargs.get('version'):
             #    print module_version(func)
             #    return
-            if 'version' in kwargs.keys():
-                del kwargs['version']
+            if "version" in kwargs.keys():
+                del kwargs["version"]
 
             # --debug
-            FORMAT = '%(asctime)-6s: %(name)s - %(levelname)s - %(message)s'
-            if kwargs.get('debug'):
+            FORMAT = "%(asctime)-6s: %(name)s - %(levelname)s - %(message)s"
+            if kwargs.get("debug"):
                 logging.basicConfig(
-                    level=logging.DEBUG,
-                    format=FORMAT,
+                    level=logging.DEBUG, format=FORMAT,
                 )
-            del kwargs['debug']
+            del kwargs["debug"]
 
             if "__args" in kwargs:
                 return func(*_correct_args(func, kwargs))
@@ -455,7 +457,7 @@ def autorun(func, _depth=1):
     """
 
     frame_local = sys._getframe(_depth).f_locals
-    if '__name__' in frame_local and frame_local['__name__'] == '__main__':
+    if "__name__" in frame_local and frame_local["__name__"] == "__main__":
         func(argv=sys.argv[1:])
 
     return func
@@ -484,7 +486,7 @@ def acceptargv(func):
     parser = signature_parser(func)
 
     def main(*args, **kw):
-        argv = kw.get('argv', None)
+        argv = kw.get("argv", None)
         if argv == None:
             return func(*args, **kw)
         else:
@@ -497,13 +499,13 @@ def acceptargv(func):
                 # if kwargs.get('version'):
                 #    print module_version(func)
                 #    return
-                if 'version' in kwargs.keys():
-                    del kwargs['version']
+                if "version" in kwargs.keys():
+                    del kwargs["version"]
 
                 # --debug
-                if kwargs.get('debug'):
+                if kwargs.get("debug"):
                     logging.basicConfig(level=logging.DEBUG)
-                del kwargs['debug']
+                del kwargs["debug"]
 
                 if "__args" in kwargs:
                     return func(*_correct_args(func, kwargs))
@@ -520,6 +522,16 @@ def acceptargv(func):
     return main
 
 
-__all__ = ['UsageError', 'FileUsageError', 'acceptargv', 'argparse',
-           'autorun', 'entrypoint', 'entrywithfile', 'runwithfile',
-           'signature_parser', 'withfile', 'withuserfile']
+__all__ = [
+    "UsageError",
+    "FileUsageError",
+    "acceptargv",
+    "argparse",
+    "autorun",
+    "entrypoint",
+    "entrywithfile",
+    "runwithfile",
+    "signature_parser",
+    "withfile",
+    "withuserfile",
+]

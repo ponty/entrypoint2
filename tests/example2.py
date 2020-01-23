@@ -2,7 +2,7 @@ import logging
 
 from entrypoint2 import entrypoint
 
-VERSION = '1.2'
+VERSION = "1.2"
 
 
 @entrypoint
