@@ -42,7 +42,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
 ]
 
-install_requires = ["decorator", "argparse"]
+install_requires = ["argparse"]
 
 # compatible with distutils of python 2.3+ or later
 setup(
