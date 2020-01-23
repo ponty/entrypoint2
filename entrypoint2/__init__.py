@@ -1,9 +1,6 @@
 from __future__ import with_statement
-# from contextlib import nested
-from decorator import decorator
 import argparse
 import textwrap
-import codecs
 import inspect
 import re
 import sys
@@ -106,7 +103,6 @@ class UsageError(Exception):
     def __init__(self, message):
         super(Exception, self).__init__(message)
         self.message = message
-    pass
 
 
 class FileUsageError(UsageError):
@@ -123,7 +119,6 @@ class SpecError(TypeError):
     """
         Used for define-time errors with withfile specs.
     """
-    pass
 
 
 def _parse_doc(docs):
