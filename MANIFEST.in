@@ -7,3 +7,4 @@ include CHANGES*
 include README*
 include setup.py
 prune docs/_build
+graft tests
