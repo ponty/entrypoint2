@@ -91,7 +91,7 @@ Installation
 
 install::
 
-    pip install entrypoint2
+    pip3 install entrypoint2
 
 .. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
 .. _argparse: http://docs.python.org/dev/library/argparse.html
