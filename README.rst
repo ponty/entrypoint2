@@ -1,14 +1,13 @@
-entrypoint2 is an easy to use argparse_ based command-line interface for python modules, fork of `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_. 
+entrypoint2 is an easy to use argparse_ based command-line interface for python modules.
 It translates function signature and documentation to argparse_ configuration.
 
 
 Links:
 
  * home: https://github.com/ponty/entrypoint2
- * documentation: http://entrypoint2.readthedocs.org
  * PYPI: https://pypi.python.org/pypi/entrypoint2
 
-|Travis| |Coveralls| |Latest Version| |Supported Python versions| |License| |Documentation|
+|Travis| |License|
 
 Goals:
 
@@ -94,22 +93,11 @@ install::
 
     pip install entrypoint2
 
-.. _entrypoint: http://pypi.python.org/pypi/entrypoint/
 .. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
 .. _argparse: http://docs.python.org/dev/library/argparse.html
 
 .. |Travis| image:: https://travis-ci.org/ponty/entrypoint2.svg?branch=master
    :target: https://travis-ci.org/ponty/entrypoint2/
-.. |Coveralls| image:: http://img.shields.io/coveralls/ponty/entrypoint2/master.svg
-   :target: https://coveralls.io/r/ponty/entrypoint2/
-.. |Latest Version| image:: https://img.shields.io/pypi/v/entrypoint2.svg
-   :target: https://pypi.python.org/pypi/entrypoint2/
-.. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/entrypoint2.svg
-   :target: https://pypi.python.org/pypi/entrypoint2/
 .. |License| image:: https://img.shields.io/pypi/l/entrypoint2.svg
    :target: https://pypi.python.org/pypi/entrypoint2/
-.. |Code Health| image:: https://landscape.io/github/ponty/entrypoint2/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/ponty/entrypoint2/master
-.. |Documentation| image:: https://readthedocs.org/projects/pyscreenshot/badge/?version=latest
-   :target: http://entrypoint2.readthedocs.org
 
