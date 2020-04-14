@@ -5,9 +5,7 @@ from setuptools import setup
 
 NAME = "entrypoint2"
 URL = "https://github.com/ponty/entrypoint2"
-DESCRIPTION = (
-    "easy to use command-line interface for python modules, fork of entrypoint"
-)
+DESCRIPTION = "easy to use command-line interface for python modules"
 PACKAGES = [
     NAME,
     NAME + ".examples",
@@ -44,7 +42,7 @@ setup(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,
-    long_description=open("README.rst", "r").read(),
+    # long_description=open("README.rst", "r").read(),
     classifiers=classifiers,
     keywords="argparse decorator optparse signature command-line",
     author="ponty",
