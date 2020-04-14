@@ -35,7 +35,4 @@ install:
  
 script:  
  - cd tests
- - nosetests -vv --with-coverage --cover-package=entrypoint2 .
- 
-after_success:
- - coveralls
+ - pytest -v .
