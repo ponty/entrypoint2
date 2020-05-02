@@ -2,7 +2,6 @@ import os
 
 from setuptools import setup
 
-
 NAME = "entrypoint2"
 URL = "https://github.com/ponty/entrypoint2"
 DESCRIPTION = "easy to use command-line interface for python modules"

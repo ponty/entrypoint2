@@ -38,7 +38,7 @@ def test_3_call():
 
 
 def test_1_cli():
-    cmd = [python, example1_py , "5"]
+    cmd = [python, example1_py, "5"]
     p = EasyProcess(cmd).call()
     assert p.return_code == 0
     assert p.stdout == ""
@@ -60,7 +60,7 @@ def test_1_cli():
     p = EasyProcess(cmd).call()
     assert p.return_code > 0
     assert p.stdout == ""
-    assert p.stderr != "" 
+    assert p.stderr != ""
 
     cmd = [python, example1_py, "-t", "1", "5", "--debug"]
     p = EasyProcess(cmd).call()
@@ -129,9 +129,9 @@ def test_1_help():
     assert p.stderr == ""
     assert p.return_code == 0
     assert "one" in p.stdout
-    assert "--two" in p.stdout 
-    assert "-t" in p.stdout 
-    assert "--three" in p.stdout 
+    assert "--two" in p.stdout
+    assert "-t" in p.stdout
+    assert "--three" in p.stdout
 
 
 def test_2_help():
