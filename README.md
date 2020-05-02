@@ -30,6 +30,10 @@ Features:
  - supported python versions: 2.7, 3.6, 3.7, 3.8
  - support for repeating arguments
 
+installation:
+
+    pip3 install entrypoint2
+
 Basic usage
 ============
 
@@ -111,7 +115,7 @@ Printing version:
 	3.2
 
 Repeating arguments
---------------------
+===================
 
 Example (entrypoint2/examples/repeating.py)::
 
@@ -145,9 +149,6 @@ Repeating flag:
 	$ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
 	['input1.txt', 'input2.txt']
 
-installation:
-
-    pip3 install entrypoint2
 
 
 [1]: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
