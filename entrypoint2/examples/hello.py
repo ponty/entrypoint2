@@ -11,11 +11,12 @@ def add(one, two=4, three=False):
 
     :param one: first number to add
     :param two: second number to add
+    :param three: print hello
     :rtype: int
     """
-    s = str(int(one) + int(two))
-
-    logging.debug("logging sum from hello.py:" + s)
-    print("printing sum from hello.py:" + s)
-
+    s = int(one) + int(two)
+    logging.debug(s)
+    print(s)
+    if three:
+        print("hello")
     return s

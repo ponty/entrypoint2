@@ -7,7 +7,7 @@ Links:
  * home: https://github.com/ponty/entrypoint2
  * PYPI: https://pypi.python.org/pypi/entrypoint2
 
-|Travis| |License|
+|Travis|
 
 Goals:
 
@@ -27,77 +27,132 @@ Features:
    (``__version__``, ``VERSION``, ..) 
  - automatic ``--debug`` flag, which turns on logging 
  - short flags are generated from long flags automatically (e.g. ``--parameter`` -> ``-p``) 
- - unit tests
  - supported python versions: 2.7, 3.6, 3.7, 3.8
  - support for repeating arguments
-
-Similar projects:
-
- * `entrypoint <http://pypi.python.org/pypi/entrypoint/>`_
- * `plac  <http://micheles.googlecode.com/hg/plac/doc/plac.html>`_
- * `baker <http://bitbucket.org/mchaput/baker>`_
- * `argh <http://packages.python.org/argh/>`_
- * `opster <http://pypi.python.org/pypi/opster/>`_
- * `commandline <http://pypi.python.org/pypi/commandline>`_
- * `optfunc <https://github.com/simonw/optfunc>`_: this has the same concept
- * `commando (1) <http://freshmeat.net/projects/commando>`_
- * `commando (2) <https://github.com/lakshmivyas/commando>`_
- * argparse_
- * `optparse <http://docs.python.org/library/optparse.html>`_
- * `plumbum <https://github.com/tomerfiliba/plumbum>`_
 
 Basic usage
 ============
 
-Example::
+Example (entrypoint2/examples/hello.py)::
+
+	import logging
 
 	from entrypoint2 import entrypoint
-	
-	__version__ = '3.2'
-	
+
+	__version__ = "3.2"
+
+
 	@entrypoint
-	def add(one, two=4, three=False): 
-	    ''' This function adds three numbers.
-	    
-	    one: first number to add
-	    two: second number to add
-	    '''
+	def add(one, two=4, three=False):
+		""" This function adds two number.
+
+		:param one: first number to add
+		:param two: second number to add
+		:param three: print hello
+		:rtype: int
+		"""
+		s = int(one) + int(two)
+		logging.debug(s)
+		print(s)
+		if three:
+			print("hello")
+		return s
+
+Adding numbers::
+
+	$ python3 -m entrypoint2.examples.hello 1
+	5
+	$ python3 -m entrypoint2.examples.hello 1 --two 1
+	2
+
+Short flag::
+
+	$ python3 -m entrypoint2.examples.hello 1 -t 1
+	2
+
+Boolean parameter::
+
+	$ python3 -m entrypoint2.examples.hello 1 --three
+	5
+	hello
+
+Logging::
+
+	$ python3 -m entrypoint2.examples.hello 1 --debug
+	2020-05-02 18:20:19,864: root - DEBUG - 5
+	5
+
+Missing positional parameter::
+
+	$ python3 -m entrypoint2.examples.hello 
+	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
+	hello.py: error: the following arguments are required: one
 
 Generated help::
 
 	$ python3 -m entrypoint2.examples.hello --help
-	usage: hello.py [-h] [-t TWO] [--three] [--version] [--debug] one
-	
+	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
+
 	This function adds two number.
-	
+
 	positional arguments:
-	  one                first number to add
-	
+	one                first number to add
+
 	optional arguments:
-	  -h, --help         show this help message and exit
-	  -t TWO, --two TWO  second number to add
-	  --three
-	  --version          show program's version number and exit
-	  --debug            set logging level to DEBUG
+	-h, --help         show this help message and exit
+	-t TWO, --two TWO  second number to add
+	--three            print hello
+	--debug            set logging level to DEBUG
+	--version          show program's version number and exit
 
 Printing version::
 
 	$ python3 -m entrypoint2.examples.hello --version
 	3.2
 
+Repeating arguments
+--------------------
 
-Installation
-============
+Example (entrypoint2/examples/repeating.py)::
 
-install::
+	from entrypoint2 import entrypoint
+
+	@entrypoint
+	def main(files=[]):
+		""" This function has repeating arguments.
+		:param files: test input
+		"""
+		print(files)
+
+Only string list is supported 
+  
+
+Printing help::
+
+	$ python3 -m entrypoint2.examples.repeating --help
+	usage: repeating.py [-h] [-f FILES] [--debug]
+
+	This function has repeating arguments.
+
+	optional arguments:
+	-h, --help            show this help message and exit
+	-f FILES, --files FILES
+							test input
+	--debug               set logging level to DEBUG
+	
+Repeating flag::
+
+	$ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
+	['input1.txt', 'input2.txt']
+
+installation::
 
     pip3 install entrypoint2
+
 
 .. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
 .. _argparse: http://docs.python.org/dev/library/argparse.html
 
 .. |Travis| image:: https://travis-ci.org/ponty/entrypoint2.svg?branch=master
    :target: https://travis-ci.org/ponty/entrypoint2/
-.. |License| image:: https://img.shields.io/pypi/l/entrypoint2.svg
-   :target: https://pypi.python.org/pypi/entrypoint2/
 
