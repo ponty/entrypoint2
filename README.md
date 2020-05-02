@@ -1,5 +1,5 @@
-entrypoint2 is an easy to use argparse_ based command-line interface for python modules.
-It translates function signature and documentation to argparse_ configuration.
+entrypoint2 is an easy to use [argparse][2] based command-line interface for python modules.
+It translates function signature and documentation to [argparse][2] configuration.
 
 
 Links:
@@ -7,7 +7,7 @@ Links:
  * home: https://github.com/ponty/entrypoint2
  * PYPI: https://pypi.python.org/pypi/entrypoint2
 
-|Travis|
+[![Build Status](https://travis-ci.org/ponty/entrypoint2.svg?branch=master)](https://travis-ci.org/ponty/entrypoint2)
 
 Goals:
 
@@ -21,8 +21,8 @@ Features:
  - the decorated function has the same behavior as without the entrypoint2 decorator
  - boolean parameters are toggle flags (e.g. ``--verbose``) 
  - function signature is preserved so it can be called both from command-line and external module
- - function name, doc and module are preserved so it can be used with sphinx autodoc_
- - sphinx autodoc_ documentation style is supported: ``:param x: this is x``
+ - function name, doc and module are preserved so it can be used with sphinx [autodoc][1]
+ - sphinx [autodoc][1] documentation style is supported: ``:param x: this is x``
  - automatic ``--version`` flag, which prints version variable from the current module
    (``__version__``, ``VERSION``, ..) 
  - automatic ``--debug`` flag, which turns on logging 
@@ -33,7 +33,7 @@ Features:
 Basic usage
 ============
 
-Example (entrypoint2/examples/hello.py)::
+Example (entrypoint2/examples/hello.py):
 
 	import logging
 
@@ -58,37 +58,37 @@ Example (entrypoint2/examples/hello.py)::
 			print("hello")
 		return s
 
-Adding numbers::
+Adding numbers:
 
 	$ python3 -m entrypoint2.examples.hello 1
 	5
 	$ python3 -m entrypoint2.examples.hello 1 --two 1
 	2
 
-Short flag::
+Short flag:
 
 	$ python3 -m entrypoint2.examples.hello 1 -t 1
 	2
 
-Boolean parameter::
+Boolean parameter:
 
 	$ python3 -m entrypoint2.examples.hello 1 --three
 	5
 	hello
 
-Logging::
+Logging:
 
 	$ python3 -m entrypoint2.examples.hello 1 --debug
 	2020-05-02 18:20:19,864: root - DEBUG - 5
 	5
 
-Missing positional parameter::
+Missing positional parameter:
 
 	$ python3 -m entrypoint2.examples.hello 
 	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
 	hello.py: error: the following arguments are required: one
 
-Generated help::
+Generated help:
 
 	$ python3 -m entrypoint2.examples.hello --help
 	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
@@ -105,7 +105,7 @@ Generated help::
 	--debug            set logging level to DEBUG
 	--version          show program's version number and exit
 
-Printing version::
+Printing version:
 
 	$ python3 -m entrypoint2.examples.hello --version
 	3.2
@@ -127,7 +127,7 @@ Example (entrypoint2/examples/repeating.py)::
 Only string list is supported 
   
 
-Printing help::
+Printing help:
 
 	$ python3 -m entrypoint2.examples.repeating --help
 	usage: repeating.py [-h] [-f FILES] [--debug]
@@ -140,19 +140,17 @@ Printing help::
 							test input
 	--debug               set logging level to DEBUG
 	
-Repeating flag::
+Repeating flag:
 
 	$ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
 	['input1.txt', 'input2.txt']
 
-installation::
+installation:
 
     pip3 install entrypoint2
 
 
-.. _autodoc: http://sphinx.pocoo.org/ext/autodoc.html
-.. _argparse: http://docs.python.org/dev/library/argparse.html
+[1]: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
+[2]: http://docs.python.org/dev/library/argparse.html
 
-.. |Travis| image:: https://travis-ci.org/ponty/entrypoint2.svg?branch=master
-   :target: https://travis-ci.org/ponty/entrypoint2/
 
