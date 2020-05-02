@@ -44,7 +44,7 @@ Example (entrypoint2/examples/hello.py):
 
 	@entrypoint
 	def add(one, two=4, three=False):
-		""" This function adds two number.
+		""" This function adds two numbers.
 
 		:param one: first number to add
 		:param two: second number to add
@@ -93,7 +93,7 @@ Generated help:
 	$ python3 -m entrypoint2.examples.hello --help
 	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
 
-	This function adds two number.
+	This function adds two numbers.
 
 	positional arguments:
 	one                first number to add
