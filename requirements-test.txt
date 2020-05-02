@@ -1,5 +1,3 @@
-tox
-coverage
 path.py
 easyprocess
 pytest
