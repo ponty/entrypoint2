@@ -33,7 +33,7 @@ Features:
 installation:
 
 ```console
-$ pip3 install entrypoint2
+$ python3 -m pip install entrypoint2
 ```
 
 Basic usage
