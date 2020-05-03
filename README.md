@@ -32,123 +32,146 @@ Features:
 
 installation:
 
-    pip3 install entrypoint2
+```console
+$ pip3 install entrypoint2
+```
 
 Basic usage
 ============
 
 Example (entrypoint2/examples/hello.py):
 
-	import logging
+```python
+import logging
 
-	from entrypoint2 import entrypoint
+from entrypoint2 import entrypoint
 
-	__version__ = "3.2"
+__version__ = "3.2"
 
 
-	@entrypoint
-	def add(one, two=4, three=False):
-		""" This function adds two numbers.
+@entrypoint
+def add(one, two=4, three=False):
+	""" This function adds two numbers.
 
-		:param one: first number to add
-		:param two: second number to add
-		:param three: print hello
-		:rtype: int
-		"""
-		s = int(one) + int(two)
-		logging.debug(s)
-		print(s)
-		if three:
-			print("hello")
-		return s
+	:param one: first number to add
+	:param two: second number to add
+	:param three: print hello
+	:rtype: int
+	"""
+	s = int(one) + int(two)
+	logging.debug(s)
+	print(s)
+	if three:
+		print("hello")
+	return s
+```
 
 Adding numbers:
 
-	$ python3 -m entrypoint2.examples.hello 1
-	5
-	$ python3 -m entrypoint2.examples.hello 1 --two 1
-	2
+```console
+$ python3 -m entrypoint2.examples.hello 1
+5
+$ python3 -m entrypoint2.examples.hello 1 --two 1
+2
+```
 
 Short flag:
 
-	$ python3 -m entrypoint2.examples.hello 1 -t 1
-	2
+```console
+$ python3 -m entrypoint2.examples.hello 1 -t 1
+2
+```
 
 Boolean parameter:
 
-	$ python3 -m entrypoint2.examples.hello 1 --three
-	5
-	hello
+```console
+$ python3 -m entrypoint2.examples.hello 1 --three
+5
+hello
+```
 
 Logging:
 
-	$ python3 -m entrypoint2.examples.hello 1 --debug
-	2020-05-02 18:20:19,864: root - DEBUG - 5
-	5
+```console
+$ python3 -m entrypoint2.examples.hello 1 --debug
+2020-05-02 18:20:19,864: root - DEBUG - 5
+5
+```
 
 Missing positional parameter:
 
-	$ python3 -m entrypoint2.examples.hello 
-	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
-	hello.py: error: the following arguments are required: one
+```console
+$ python3 -m entrypoint2.examples.hello 
+usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
+hello.py: error: the following arguments are required: one
+```
 
 Generated help:
 
-	$ python3 -m entrypoint2.examples.hello --help
-	usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
+```console
+$ python3 -m entrypoint2.examples.hello --help
+usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
 
-	This function adds two numbers.
+This function adds two numbers.
 
-	positional arguments:
-	one                first number to add
+positional arguments:
+one                first number to add
 
-	optional arguments:
-	-h, --help         show this help message and exit
-	-t TWO, --two TWO  second number to add
-	--three            print hello
-	--debug            set logging level to DEBUG
-	--version          show program's version number and exit
+optional arguments:
+-h, --help         show this help message and exit
+-t TWO, --two TWO  second number to add
+--three            print hello
+--debug            set logging level to DEBUG
+--version          show program's version number and exit
+```
 
 Printing version:
 
-	$ python3 -m entrypoint2.examples.hello --version
-	3.2
+```console
+$ python3 -m entrypoint2.examples.hello --version
+3.2
+```
 
 Repeating arguments
 ===================
 
 Example (entrypoint2/examples/repeating.py)::
 
-	from entrypoint2 import entrypoint
+```python
+from entrypoint2 import entrypoint
 
-	@entrypoint
-	def main(files=[]):
-		""" This function has repeating arguments.
-		:param files: test input
-		"""
-		print(files)
+@entrypoint
+def main(files=[]):
+	""" This function has repeating arguments.
+	:param files: test input
+	"""
+	print(files)
+```
 
 Only string list is supported 
   
 
 Printing help:
 
-	$ python3 -m entrypoint2.examples.repeating --help
-	usage: repeating.py [-h] [-f FILES] [--debug]
+```console
+$ python3 -m entrypoint2.examples.repeating --help
+usage: repeating.py [-h] [-f FILES] [--debug]
 
-	This function has repeating arguments.
+This function has repeating arguments.
 
-	optional arguments:
-	-h, --help            show this help message and exit
-	-f FILES, --files FILES
-							test input
-	--debug               set logging level to DEBUG
-	
+optional arguments:
+-h, --help            show this help message and exit
+-f FILES, --files FILES
+						test input
+--debug               set logging level to DEBUG
+```
+
 Repeating flag:
 
-	$ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
-	['input1.txt', 'input2.txt']
-
+```console
+$ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
+['input1.txt', 'input2.txt']
+```
 
 
 [1]: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
