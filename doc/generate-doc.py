@@ -1,10 +1,10 @@
+import glob
 import logging
 import os
-import glob
-
-from entrypoint2 import entrypoint
 
 from easyprocess import EasyProcess
+
+from entrypoint2 import entrypoint
 
 commands = [
     "python3 -m entrypoint2.examples.hello 1",
@@ -32,7 +32,6 @@ def main():
     logging.info("gendir: %s", gendir)
     os.makedirs(gendir, exist_ok=True)
     empty_dir(gendir)
-    pls = []
     try:
         os.chdir("gen")
         for cmd in commands:
@@ -48,7 +47,6 @@ def main():
                 if p.stderr and p.stdout:
                     f.write("\n")
                 f.write(p.stdout)
-                pls += [p]
     finally:
         os.chdir("..")
     embedme = EasyProcess(["npx", "embedme", "../README.md"])
