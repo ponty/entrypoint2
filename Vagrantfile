@@ -86,6 +86,10 @@ sudo pip3 install -U tox
   
 # doc dependencies
 #  sudo pip install -r /vagrant/requirements-doc.txt
+
+# doc dependencies
+  sudo apt-get install -y npm
+  sudo npm install -g npx
   
   "
       config.vm.provision "shell", inline: $script

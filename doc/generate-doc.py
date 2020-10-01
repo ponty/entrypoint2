@@ -1,0 +1,58 @@
+import logging
+import os
+import glob
+
+from entrypoint2 import entrypoint
+
+from easyprocess import EasyProcess
+
+commands = [
+    "python3 -m entrypoint2.examples.hello 1",
+    "python3 -m entrypoint2.examples.hello 1 --two 1",
+    "python3 -m entrypoint2.examples.hello 1 -t 1",
+    "python3 -m entrypoint2.examples.hello 1 --three",
+    "python3 -m entrypoint2.examples.hello 1 --debug",
+    "python3 -m entrypoint2.examples.hello",
+    "python3 -m entrypoint2.examples.hello --help",
+    "python3 -m entrypoint2.examples.hello --version",
+    "python3 -m entrypoint2.examples.repeating --help",
+    "python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt",
+]
+
+
+def empty_dir(dir):
+    files = glob.glob(os.path.join(dir, "*"))
+    for f in files:
+        os.remove(f)
+
+
+@entrypoint
+def main():
+    gendir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gen")
+    logging.info("gendir: %s", gendir)
+    os.makedirs(gendir, exist_ok=True)
+    empty_dir(gendir)
+    pls = []
+    try:
+        os.chdir("gen")
+        for cmd in commands:
+            logging.info("cmd: %s", cmd)
+            fname_base = cmd.replace(" ", "_")
+            fname = fname_base + ".txt"
+            logging.info("cmd: %s", cmd)
+            print("file name: %s" % fname)
+            with open(fname, "w") as f:
+                f.write("$ " + cmd + "\n")
+                p = EasyProcess(cmd).call()
+                f.write(p.stderr)
+                if p.stderr and p.stdout:
+                    f.write("\n")
+                f.write(p.stdout)
+                pls += [p]
+    finally:
+        os.chdir("..")
+    embedme = EasyProcess(["npx", "embedme", "../README.md"])
+    embedme.call()
+    print(embedme.stdout)
+    assert embedme.return_code == 0
+    assert not "but file does not exist" in embedme.stdout

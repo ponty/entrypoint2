@@ -1,0 +1,2 @@
+$ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
+['input1.txt', 'input2.txt']

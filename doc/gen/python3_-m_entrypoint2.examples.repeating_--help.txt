@@ -1,0 +1,10 @@
+$ python3 -m entrypoint2.examples.repeating --help
+usage: repeating.py [-h] [-f FILES] [--debug]
+
+This function has repeating arguments.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FILES, --files FILES
+                        test input
+  --debug               set logging level to DEBUG
