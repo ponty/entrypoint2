@@ -27,7 +27,7 @@ Features:
    (``__version__``, ``VERSION``, ..) 
  - automatic ``--debug`` flag, which turns on logging 
  - short flags are generated from long flags automatically (e.g. ``--parameter`` -> ``-p``) 
- - supported python versions: 2.7, 3.6, 3.7, 3.8
+ - supported python versions: 2.7, 3.6, 3.7, 3.8, 3.9
  - support for repeating arguments
 
 installation:
