@@ -1,14 +1,14 @@
+import os
 import sys
 
 from easyprocess import EasyProcess
-from path import Path
 
 python = sys.executable
-
-d = Path(__file__).parent
-example1_py = d / "example1.py"
-example2_py = d / "example2.py"
-example3_py = d / "example3.py"
+join = os.path.join
+d = os.path.dirname(__file__)
+example1_py = join(d, "example1.py")
+example2_py = join(d, "example2.py")
+example3_py = join(d, "example3.py")
 
 PY3 = sys.version_info[0] >= 3
 
