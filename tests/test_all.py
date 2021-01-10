@@ -10,7 +10,6 @@ example1_py = join(d, "example1.py")
 example2_py = join(d, "example2.py")
 example3_py = join(d, "example3.py")
 
-PY3 = sys.version_info[0] >= 3
 
 
 def test_1_call():
@@ -94,24 +93,16 @@ def test_3_cli():
 def test_1_ver():
     cmd = [python, example1_py, "--version"]
     p = EasyProcess(cmd).call()
-    if PY3:
-        assert p.stderr == ""
-        assert p.stdout == "3.2"
-    else:
-        assert p.stdout == ""
-        assert p.stderr == "3.2"
+    assert p.stderr == ""
+    assert p.stdout == "3.2"
     assert p.return_code == 0
 
 
 def test_2_ver():
     cmd = [python, example2_py, "--version"]
     p = EasyProcess(cmd).call()
-    if PY3:
-        assert p.stderr == ""
-        assert p.stdout == "1.2"
-    else:
-        assert p.stdout == ""
-        assert p.stderr == "1.2"
+    assert p.stderr == ""
+    assert p.stdout == "1.2"
     assert p.return_code == 0
 
 

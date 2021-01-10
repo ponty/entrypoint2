@@ -57,23 +57,15 @@ import textwrap
 
 ENCODING = "utf8"
 
-PY3 = sys.version_info[0] >= 3
 
-
-def unidecode(x):
-    if PY3:
-        return x
-    else:
-        return x.decode(ENCODING)
+def unidecode(x): #TODO:remove
+    return x
 
 
 def module_version(func):
     version = None
     for v in "__version__ VERSION version".split():
-        if PY3:
-            version = func.__globals__.get(v)
-        else:
-            version = func.func_globals.get(v)
+        version = func.__globals__.get(v)
         if version:
             break
     return version
@@ -336,7 +328,7 @@ def signature_parser(func):
             kwargs["type"] = unidecode
         else:
             kwargs["action"] = "store"
-            if type(default) in [type(None), str if PY3 else unicode]:
+            if type(default) in [type(None), str]:
                 kwargs["type"] = unidecode
             else:
                 kwargs["type"] = type(default)
