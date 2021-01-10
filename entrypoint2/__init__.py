@@ -6,11 +6,7 @@ import sys
 import textwrap
 
 
-def unidecode(x):  # TODO:remove
-    return x
-
-
-def module_version(func):
+def _module_version(func):
     version = None
     for v in "__version__ VERSION version".split():
         version = func.__globals__.get(v)
@@ -19,9 +15,9 @@ def module_version(func):
     return version
 
 
-class ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
+class _ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
     def __init__(self, *args, **kwargs):
-        super(ParagraphPreservingArgParseFormatter, self).__init__(*args, **kwargs)
+        super(_ParagraphPreservingArgParseFormatter, self).__init__(*args, **kwargs)
         self._long_break_matcher = argparse._re.compile(r"\n\n+")
 
     def _fill_text(self, text, width, indent):
@@ -118,7 +114,7 @@ def _parse_doc(docs):
     return shorts, metavars, helps, description, epilog
 
 
-def signature_parser(func):
+def _signature_parser(func):
     args, trail, kwargs, defaults = inspect.getargspec(func)
 
     if not args:
@@ -141,7 +137,7 @@ def signature_parser(func):
     parser = argparse.ArgumentParser(
         description=description,
         epilog=epilog,
-        formatter_class=ParagraphPreservingArgParseFormatter,
+        formatter_class=_ParagraphPreservingArgParseFormatter,
     )
 
     # special flags
@@ -150,7 +146,7 @@ def signature_parser(func):
     special_flags += ["debug"]
     defaults += (False,)
     helps["debug"] = "set logging level to DEBUG"
-    if module_version(func):
+    if _module_version(func):
         special_flags += ["version"]
         defaults += (False,)
         helps["version"] = "show program's version number and exit"
@@ -177,7 +173,7 @@ def signature_parser(func):
 
         if param == "version":
             kwargs["action"] = "version"
-            kwargs["version"] = module_version(func)
+            kwargs["version"] = _module_version(func)
         elif default is True:
             kwargs["action"] = "store_false"
         elif default is False:
@@ -188,16 +184,16 @@ def signature_parser(func):
             #            if len(default):
             #                first = default[0]
             #                if type(first) in [type(None), unicode]:
-            #                    kwargs['type'] = unidecode
+            #                    kwargs['type'] = lambda x: x
             #                else:
             #                    kwargs['type'] = type(first)
             #                kwargs['default'] = []
             #            else:
-            kwargs["type"] = unidecode
+            kwargs["type"] = lambda x: x
         else:
             kwargs["action"] = "store"
             if type(default) in [type(None), str]:
-                kwargs["type"] = unidecode
+                kwargs["type"] = lambda x: x
             else:
                 kwargs["type"] = type(default)
 
@@ -212,7 +208,7 @@ def signature_parser(func):
     # Compulsary positional options
     for need in needed:
 
-        kwargs = {"action": "store", "type": unidecode}
+        kwargs = {"action": "store", "type": lambda x: x}
 
         if need in helps:
             kwargs["help"] = helps[need]
@@ -226,7 +222,7 @@ def signature_parser(func):
 
     # The trailing arguments
     if trail:
-        kwargs = {"action": "store", "type": unidecode, "nargs": "*"}
+        kwargs = {"action": "store", "type": lambda x: x, "nargs": "*"}
 
         if trail in helps:
             kwargs["help"] = helps[trail]
@@ -255,7 +251,7 @@ def entrypoint(func):
     if "__name__" in frame_local and frame_local["__name__"] == "__main__":
         argv = sys.argv[1:]
 
-        parser = signature_parser(func)
+        parser = _signature_parser(func)
         kwargs = parser.parse_args(argv).__dict__
 
         # special cli flags
