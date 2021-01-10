@@ -11,7 +11,6 @@ example2_py = join(d, "example2.py")
 example3_py = join(d, "example3.py")
 
 
-
 def test_1_call():
     import example1
 
