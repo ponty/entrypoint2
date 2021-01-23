@@ -115,7 +115,16 @@ def _parse_doc(docs):
 
 
 def _signature_parser(func):
-    args, trail, kwargs, defaults = inspect.getargspec(func)
+    # args, varargs, varkw, defaults = inspect.getargspec(func)
+    (
+        args,
+        varargs,
+        varkw,
+        defaults,
+        kwonlyargs,
+        kwonlydefaults,
+        annotations,
+    ) = inspect.getfullargspec(func)
 
     if not args:
         args = []
@@ -123,7 +132,7 @@ def _signature_parser(func):
     if not defaults:
         defaults = []
 
-    if kwargs:
+    if varkw:
         raise Exception("Can't wrap a function with **kwargs")
 
     # Compulsary positional options
@@ -169,17 +178,17 @@ def _signature_parser(func):
         if short and short != "-h":
             args = [short] + args
 
-        kwargs = {"default": default, "dest": param.replace("-", "_")}
+        d = {"default": default, "dest": param.replace("-", "_")}
 
         if param == "version":
-            kwargs["action"] = "version"
-            kwargs["version"] = _module_version(func)
+            d["action"] = "version"
+            d["version"] = _module_version(func)
         elif default is True:
-            kwargs["action"] = "store_false"
+            d["action"] = "store_false"
         elif default is False:
-            kwargs["action"] = "store_true"
+            d["action"] = "store_true"
         elif isinstance(default, list):
-            kwargs["action"] = "append"
+            d["action"] = "append"
             #  default is not working
             #            if len(default):
             #                first = default[0]
@@ -189,50 +198,50 @@ def _signature_parser(func):
             #                    kwargs['type'] = type(first)
             #                kwargs['default'] = []
             #            else:
-            kwargs["type"] = lambda x: x
+            d["type"] = lambda x: x
         else:
-            kwargs["action"] = "store"
+            d["action"] = "store"
             if type(default) in [type(None), str]:
-                kwargs["type"] = lambda x: x
+                d["type"] = lambda x: x
             else:
-                kwargs["type"] = type(default)
+                d["type"] = type(default)
 
         if param in helps:
-            kwargs["help"] = helps[param]
+            d["help"] = helps[param]
 
         if param in metavars:
-            kwargs["metavar"] = metavars[param]
+            d["metavar"] = metavars[param]
 
-        parser.add_argument(*args, **kwargs)
+        parser.add_argument(*args, **d)
 
     # Compulsary positional options
     for need in needed:
 
-        kwargs = {"action": "store", "type": lambda x: x}
+        d = {"action": "store", "type": lambda x: x}
 
         if need in helps:
-            kwargs["help"] = helps[need]
+            d["help"] = helps[need]
 
         if need in shorts:
             args = [shorts[need]]
         else:
             args = [need]
 
-        parser.add_argument(*args, **kwargs)
+        parser.add_argument(*args, **d)
 
     # The trailing arguments
-    if trail:
-        kwargs = {"action": "store", "type": lambda x: x, "nargs": "*"}
+    if varargs:
+        d = {"action": "store", "type": lambda x: x, "nargs": "*"}
 
-        if trail in helps:
-            kwargs["help"] = helps[trail]
+        if varargs in helps:
+            d["help"] = helps[varargs]
 
-        if trail in shorts:
-            kwargs["metavar"] = shorts[trail]
+        if varargs in shorts:
+            d["metavar"] = shorts[varargs]
         else:
-            kwargs["metavar"] = trail
+            d["metavar"] = varargs
 
-        parser.add_argument("__args", **kwargs)
+        parser.add_argument("__args", **d)
 
     return parser
 
