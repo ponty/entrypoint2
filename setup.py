@@ -36,7 +36,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
 ]
 
-install_requires = ["argparse"]
+install_requires = []
 
 # compatible with distutils of python 2.3+ or later
 setup(
