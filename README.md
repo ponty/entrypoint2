@@ -7,7 +7,7 @@ Links:
  * home: https://github.com/ponty/entrypoint2
  * PYPI: https://pypi.python.org/pypi/entrypoint2
 
-[![Build Status](https://travis-ci.org/ponty/entrypoint2.svg?branch=master)](https://travis-ci.org/ponty/entrypoint2)
+![workflow](https://github.com/ponty/entrypoint2/actions/workflows/main.yml/badge.svg)
 
 Goals:
 

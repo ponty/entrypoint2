@@ -28,8 +28,8 @@ distribute_setup.py
 sloccount.sc
 
 .*
-!.gitignore
-!.travis.yml
+!.git*
+!.travis*
 
 *.log
 docs/api/*
