@@ -54,7 +54,7 @@ def _parse_doc(docs):
     shorts, metavars, helps, description, epilog = {}, {}, {}, "", ""
 
     if docs:
-
+        prev = ""
         for line in docs.split("\n"):
 
             line = line.strip()
