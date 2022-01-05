@@ -36,13 +36,52 @@ installation:
 $ python3 -m pip install entrypoint2
 ```
 
+Hello world
+===========
+
+```py
+# entrypoint2/examples/hello.py
+
+from entrypoint2 import entrypoint
+
+
+@entrypoint
+def hello(message):
+    # type of 'message' is not defined, default is str
+    print(message)
+
+```
+
+Generated help:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_--help.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.hello --help
+usage: hello.py [-h] [--debug] message
+
+positional arguments:
+  message
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --debug     set logging level to DEBUG
+```
+
+Running:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_hi.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.hello hi
+hi
+```
+
 Basic usage
 ============
 
 Example:
 
 ```py
-# entrypoint2/examples/hello.py
+# entrypoint2/examples/add.py
 
 import logging
 
@@ -52,15 +91,18 @@ __version__ = "3.2"
 
 
 @entrypoint
-def add(one, two=4, three=False):
+def add(one: int, two=4, three=False):
     """ This function adds two numbers.
 
     :param one: first number to add
     :param two: second number to add
-    :param three: print hello
+    :param three: print hello if True
     :rtype: int
     """
-    s = int(one) + int(two)
+
+    # 'one' and 'two' are converted to int
+    s = one + two
+
     logging.debug(s)
     print(s)
     if three:
@@ -69,62 +111,12 @@ def add(one, two=4, three=False):
 
 ```
 
-Adding numbers:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_1.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.hello 1
-5
-```
-
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_1_--two_1.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.hello 1 --two 1
-2
-```
-
-Short flag:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_1_-t_1.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.hello 1 -t 1
-2
-```
-
-Boolean parameter:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_1_--three.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.hello 1 --three
-5
-hello
-```
-
-Logging:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_1_--debug.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.hello 1 --debug
-2020-10-01 07:41:17,197: root - DEBUG - 5
-5
-```
-
-Missing positional parameter:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.hello
-usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
-hello.py: error: the following arguments are required: one
-```
-
 Generated help:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_--help.txt -->
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_--help.txt -->
 
 ```console
-$ python3 -m entrypoint2.examples.hello --help
-usage: hello.py [-h] [-t TWO] [--three] [--debug] [--version] one
+$ python3 -m entrypoint2.examples.add --help
+usage: add.py [-h] [-t TWO] [--three] [--debug] [--version] one
 
 This function adds two numbers.
 
@@ -134,16 +126,68 @@ positional arguments:
 optional arguments:
   -h, --help         show this help message and exit
   -t TWO, --two TWO  second number to add
-  --three            print hello
+  --three            print hello if True
   --debug            set logging level to DEBUG
   --version          show program's version number and exit
 ```
 
-Printing version:
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.hello_--version.txt -->
+Positional parameter:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_1.txt -->
 
 ```console
-$ python3 -m entrypoint2.examples.hello --version
+$ python3 -m entrypoint2.examples.add 1
+5
+```
+
+Optional parameter:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_1_--two_1.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.add 1 --two 1
+2
+```
+
+Short flag:
+First parameter with first letter 't' is used ('two'). 
+Next parameters with same first letter ('three') has no short flag.
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_1_-t_1.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.add 1 -t 1
+2
+```
+
+Boolean parameter:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_1_--three.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.add 1 --three
+5
+hello
+```
+
+Logging:
+
+```console
+$ python3 -m entrypoint2.examples.add 1 --debug
+2021-04-05 13:30:15,590: root - DEBUG - 5
+5
+```
+
+Missing positional parameter:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.add
+usage: add.py [-h] [-t TWO] [--three] [--debug] [--version] one
+add.py: error: the following arguments are required: one
+```
+
+Printing version:
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_--version.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.add --version
 3.2
 ```
 
@@ -192,6 +236,164 @@ Repeating flag:
 ```console
 $ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
 ['input1.txt', 'input2.txt']
+```
+
+type hints
+==========
+
+```py
+# entrypoint2/examples/typehints.py
+
+from entrypoint2 import entrypoint
+
+
+@entrypoint
+def func(
+    strpar: str, bytespar: bytes, intpar: int, floatpar: float, boolpar: bool,
+):
+    print(f"strpar={repr(strpar)}")
+    print(f"bytespar={repr(bytespar)}")
+    print(f"intpar={repr(intpar)}")
+    print(f"floatpar={repr(floatpar)}")
+    print(f"boolpar={repr(boolpar)}")
+
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.typehints_-h.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.typehints -h
+usage: typehints.py [-h] [--debug] strpar bytespar intpar floatpar boolpar
+
+positional arguments:
+  strpar
+  bytespar
+  intpar
+  floatpar
+  boolpar
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --debug     set logging level to DEBUG
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.typehints_0_0_0_0_0.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.typehints 0 0 0 0 0
+strpar='0'
+bytespar=b'0'
+intpar=0
+floatpar=0.0
+boolpar=False
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.typehints_1_1_1_1_1.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.typehints 1 1 1 1 1
+strpar='1'
+bytespar=b'1'
+intpar=1
+floatpar=1.0
+boolpar=True
+```
+
+default value
+=============
+
+```py
+# entrypoint2/examples/defaultvalues.py
+
+from entrypoint2 import entrypoint
+
+
+@entrypoint
+def add(
+    strpar="string", bytespar=b"bytes", intpar=21, floatpar=3.14, boolpar=False,
+):
+    print(f"strpar={repr(strpar)}")
+    print(f"bytespar={repr(bytespar)}")
+    print(f"intpar={repr(intpar)}")
+    print(f"floatpar={repr(floatpar)}")
+    print(f"boolpar={repr(boolpar)}")
+
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.defaultvalues_-h.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.defaultvalues -h
+usage: defaultvalues.py [-h] [-s STRPAR] [-b BYTESPAR] [-i INTPAR]
+                        [-f FLOATPAR] [--boolpar] [--debug]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s STRPAR, --strpar STRPAR
+  -b BYTESPAR, --bytespar BYTESPAR
+  -i INTPAR, --intpar INTPAR
+  -f FLOATPAR, --floatpar FLOATPAR
+  --boolpar
+  --debug               set logging level to DEBUG
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.defaultvalues_-s_1_-b_1_-i_1_-f_1_--boolpar.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.defaultvalues -s 1 -b 1 -i 1 -f 1 --boolpar
+strpar='1'
+bytespar=b'1'
+intpar=1
+floatpar=1.0
+boolpar=True
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.defaultvalues_-s_hello_-b_hello_-i_3_-f_3.141.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.defaultvalues -s hello -b hello -i 3 -f 3.141
+strpar='hello'
+bytespar=b'hello'
+intpar=3
+floatpar=3.141
+boolpar=False
+```
+
+Variable-length arguments (varargs)
+===================================
+
+
+```py
+# entrypoint2/examples/varargs.py
+
+from entrypoint2 import entrypoint
+
+
+@entrypoint
+def func(*args):
+    print(args)
+
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.varargs_-h.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.varargs -h
+usage: varargs.py [-h] [--debug] [args [args ...]]
+
+positional arguments:
+  args
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --debug     set logging level to DEBUG
+```
+
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.varargs_a_b_c.txt -->
+
+```console
+$ python3 -m entrypoint2.examples.varargs a b c
+('a', 'b', 'c')
 ```
 
 

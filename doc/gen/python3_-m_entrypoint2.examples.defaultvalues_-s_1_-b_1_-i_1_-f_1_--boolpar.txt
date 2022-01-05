@@ -1,0 +1,6 @@
+$ python3 -m entrypoint2.examples.defaultvalues -s 1 -b 1 -i 1 -f 1 --boolpar
+strpar='1'
+bytespar=b'1'
+intpar=1
+floatpar=1.0
+boolpar=True

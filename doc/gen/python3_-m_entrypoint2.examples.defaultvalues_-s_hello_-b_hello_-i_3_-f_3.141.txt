@@ -1,0 +1,6 @@
+$ python3 -m entrypoint2.examples.defaultvalues -s hello -b hello -i 3 -f 3.141
+strpar='hello'
+bytespar=b'hello'
+intpar=3
+floatpar=3.141
+boolpar=False

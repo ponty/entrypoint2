@@ -1,3 +1,0 @@
-$ python3 -m entrypoint2.examples.hello 1 --three
-5
-hello

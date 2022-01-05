@@ -1,0 +1,14 @@
+$ python3 -m entrypoint2.examples.add --help
+usage: add.py [-h] [-t TWO] [--three] [--debug] [--version] one
+
+This function adds two numbers.
+
+positional arguments:
+  one                first number to add
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -t TWO, --two TWO  second number to add
+  --three            print hello if True
+  --debug            set logging level to DEBUG
+  --version          show program's version number and exit

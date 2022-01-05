@@ -1,8 +1,8 @@
-$ python3 -m entrypoint2.examples.hello --help
-usage: hello.py [-h] [--debug] message
+$ python3 -m entrypoint2.examples.varargs -h
+usage: varargs.py [-h] [--debug] [args [args ...]]
 
 positional arguments:
-  message
+  args
 
 optional arguments:
   -h, --help  show this help message and exit

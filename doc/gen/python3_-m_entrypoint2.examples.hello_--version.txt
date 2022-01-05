@@ -1,2 +1,0 @@
-$ python3 -m entrypoint2.examples.hello --version
-3.2

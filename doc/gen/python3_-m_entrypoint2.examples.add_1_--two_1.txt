@@ -1,0 +1,2 @@
+$ python3 -m entrypoint2.examples.add 1 --two 1
+2

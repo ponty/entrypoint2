@@ -1,0 +1,13 @@
+$ python3 -m entrypoint2.examples.typehints -h
+usage: typehints.py [-h] [--debug] strpar bytespar intpar floatpar boolpar
+
+positional arguments:
+  strpar
+  bytespar
+  intpar
+  floatpar
+  boolpar
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --debug     set logging level to DEBUG

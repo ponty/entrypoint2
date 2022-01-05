@@ -1,0 +1,2 @@
+$ python3 -m entrypoint2.examples.add --version
+3.2
