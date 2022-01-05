@@ -19,6 +19,7 @@ LONG_DESCRIPTION += VERSION
 PACKAGES = [
     NAME,
     NAME + ".examples",
+    NAME + ".check",
 ]
 
 classifiers = [
