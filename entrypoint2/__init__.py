@@ -4,6 +4,7 @@ import logging
 import re
 import sys
 import textwrap
+from typing import Any, Iterable, List, Optional, Sequence
 
 
 def _module_version(func):
@@ -114,6 +115,62 @@ def _parse_doc(docs):
     return shorts, metavars, helps, description, epilog
 
 
+def listLike(ann, t):
+    return ann is List[t] or ann is Sequence[t] or ann is Iterable[t]
+
+
+_toStr = lambda x: x
+_toBytes = lambda x: bytes(x, "utf-8")
+_toBool = lambda x: x.strip().lower() not in ["false", "0", "no", ""]
+
+
+def _useAnnotation(ann):
+    # https://stackoverflow.com/questions/48572831/how-to-access-the-type-arguments-of-typing-generic
+    d = {}
+    d["action"] = "store"
+    d["type"] = _toStr
+    if ann is str:
+        pass
+    elif ann is bytes:
+        d["type"] = _toBytes
+    elif ann is bool:
+        d["type"] = _toBool
+    elif listLike(ann, str):
+        d["action"] = "append"
+    elif listLike(ann, bytes):
+        d["action"] = "append"
+        d["type"] = _toBytes
+    elif listLike(ann, int):
+        d["action"] = "append"
+        d["type"] = int
+    elif listLike(ann, float):
+        d["action"] = "append"
+        d["type"] = float
+    elif listLike(ann, complex):
+        d["action"] = "append"
+        d["type"] = complex
+    elif listLike(ann, bool):
+        d["action"] = "append"
+        d["type"] = _toBool
+    elif ann is Any:
+        pass
+    elif ann is Optional[str]:
+        pass
+    elif ann is Optional[bytes]:
+        d["type"] = _toBytes
+    elif ann is Optional[int]:
+        d["type"] = int
+    elif ann is Optional[float]:
+        d["type"] = float
+    elif ann is Optional[complex]:
+        d["type"] = complex
+    elif ann is Optional[bool]:
+        d["type"] = _toBool
+    else:
+        d["type"] = ann
+    return d["action"], d["type"]
+
+
 def _signature_parser(func):
     # args, varargs, varkw, defaults = inspect.getargspec(func)
     (
@@ -125,7 +182,14 @@ def _signature_parser(func):
         kwonlydefaults,
         annotations,
     ) = inspect.getfullargspec(func)
-
+    # print(f"func: {func}")
+    # print(f"args: {args}")
+    # print(f"varargs: {varargs}")
+    # print(f"varkw: {varkw}")
+    # print(f"defaults: {defaults}")
+    # print(f"kwonlyargs: {kwonlyargs}")
+    # print(f"kwonlydefaults: {kwonlydefaults}")
+    # print(f"annotations: {annotations}")
     if not args:
         args = []
 
@@ -133,7 +197,7 @@ def _signature_parser(func):
         defaults = []
 
     if varkw:
-        raise Exception("Can't wrap a function with **kwargs")
+        raise ValueError("Can't wrap a function with **kwargs")
 
     # Compulsary positional options
     needed = args[0 : len(args) - len(defaults)]
@@ -161,7 +225,7 @@ def _signature_parser(func):
         helps["version"] = "show program's version number and exit"
     params += special_flags
 
-    # Optional flag options
+    # Optional flag options  f(p=1)
     used_shorts = set()
     for param, default in zip(params, defaults):
         args = ["--%s" % param.replace("_", "-")]
@@ -180,6 +244,7 @@ def _signature_parser(func):
 
         d = {"default": default, "dest": param.replace("-", "_")}
 
+        ann = annotations.get(param)
         if param == "version":
             d["action"] = "version"
             d["version"] = _module_version(func)
@@ -187,37 +252,40 @@ def _signature_parser(func):
             d["action"] = "store_false"
         elif default is False:
             d["action"] = "store_true"
+        elif ann:
+            d["action"], d["type"] = _useAnnotation(ann)
         elif isinstance(default, list):
             d["action"] = "append"
-            #  default is not working
-            #            if len(default):
-            #                first = default[0]
-            #                if type(first) in [type(None), unicode]:
-            #                    kwargs['type'] = lambda x: x
-            #                else:
-            #                    kwargs['type'] = type(first)
-            #                kwargs['default'] = []
-            #            else:
-            d["type"] = lambda x: x
+            d["type"] = _toStr
+        elif isinstance(default, str):
+            d["action"] = "store"
+            d["type"] = _toStr
+        elif isinstance(default, bytes):
+            d["action"] = "store"
+            d["type"] = _toBytes
+        elif default is None:
+            d["action"] = "store"
+            d["type"] = _toStr
         else:
             d["action"] = "store"
-            if type(default) in [type(None), str]:
-                d["type"] = lambda x: x
-            else:
-                d["type"] = type(default)
+            d["type"] = type(default)
 
         if param in helps:
             d["help"] = helps[param]
 
         if param in metavars:
             d["metavar"] = metavars[param]
-
         parser.add_argument(*args, **d)
 
-    # Compulsary positional options
+    # Compulsary positional options  f(p1,p2)
     for need in needed:
 
-        d = {"action": "store", "type": lambda x: x}
+        ann = annotations.get(need)
+        d = {"action": "store"}
+        if ann:
+            d["action"], d["type"] = _useAnnotation(ann)
+        else:
+            d["type"] = _toStr
 
         if need in helps:
             d["help"] = helps[need]
@@ -229,9 +297,9 @@ def _signature_parser(func):
 
         parser.add_argument(*args, **d)
 
-    # The trailing arguments
+    # The trailing arguments  f(*args)
     if varargs:
-        d = {"action": "store", "type": lambda x: x, "nargs": "*"}
+        d = {"action": "store", "type": _toStr, "nargs": "*"}
 
         if varargs in helps:
             d["help"] = helps[varargs]
@@ -259,7 +327,8 @@ def entrypoint(func):
     frame_local = sys._getframe(1).f_locals
     if "__name__" in frame_local and frame_local["__name__"] == "__main__":
         argv = sys.argv[1:]
-
+        # print("__annotations__ ", func.__annotations__)
+        # print("__total__", func.__total__)
         parser = _signature_parser(func)
         kwargs = parser.parse_args(argv).__dict__
 
