@@ -10,7 +10,7 @@ b'bytes' -> bytes b'42'
 None -> str '42'
 False -> bool True
 True -> bool False
-""".strip()
+""".strip().splitlines()
 
 hints = """
 str -> str '42'
@@ -44,18 +44,18 @@ Optional[float] -> float 42.0
 Optional[complex] -> complex (42+0j)
 Optional[bool] -> bool True
 Any -> str '42'
-""".strip()
+""".strip().splitlines()
 
 
 def test_check_defaults():
     p = EasyProcess("python3 -m entrypoint2.check.defaults").call()
     assert p.stderr == ""
     assert p.return_code == 0
-    assert p.stdout == defaults
+    assert p.stdout.splitlines() == defaults
 
 
 def test_check_hints():
     p = EasyProcess("python3 -m entrypoint2.check.hints").call()
     assert p.stderr == ""
     assert p.return_code == 0
-    assert p.stdout == hints
+    assert p.stdout.splitlines() == hints
