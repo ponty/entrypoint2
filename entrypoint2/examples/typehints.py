@@ -3,7 +3,11 @@ from entrypoint2 import entrypoint
 
 @entrypoint
 def func(
-    strpar: str, bytespar: bytes, intpar: int, floatpar: float, boolpar: bool,
+    strpar: str,
+    bytespar: bytes,
+    intpar: int,
+    floatpar: float,
+    boolpar: bool,
 ):
     print(f"strpar={repr(strpar)}")
     print(f"bytespar={repr(bytespar)}")

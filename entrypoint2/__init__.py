@@ -316,8 +316,8 @@ def _signature_parser(func):
 
 def _correct_args(func, kwargs):
     """
-        Convert a dictionary of arguments including __argv into a list
-        for passing to the function.
+    Convert a dictionary of arguments including __argv into a list
+    for passing to the function.
     """
     args = inspect.getargspec(func)[0]
     return [kwargs[arg] for arg in args] + kwargs["__args"]
@@ -345,7 +345,8 @@ def entrypoint(func):
         FORMAT = "%(asctime)-6s: %(name)s - %(levelname)s - %(message)s"
         if kwargs.get("debug"):
             logging.basicConfig(
-                level=logging.DEBUG, format=FORMAT,
+                level=logging.DEBUG,
+                format=FORMAT,
             )
         del kwargs["debug"]
 

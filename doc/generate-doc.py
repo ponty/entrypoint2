@@ -3,6 +3,7 @@ import logging
 import os
 
 from easyprocess import EasyProcess
+
 from entrypoint2 import entrypoint
 
 commands = [

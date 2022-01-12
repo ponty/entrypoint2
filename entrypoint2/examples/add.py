@@ -7,7 +7,7 @@ __version__ = "3.2"
 
 @entrypoint
 def add(one: int, two=4, three=False):
-    """ This function adds two numbers.
+    """This function adds two numbers.
 
     :param one: first number to add
     :param two: second number to add

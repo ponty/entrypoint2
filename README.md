@@ -92,7 +92,7 @@ __version__ = "3.2"
 
 @entrypoint
 def add(one: int, two=4, three=False):
-    """ This function adds two numbers.
+    """This function adds two numbers.
 
     :param one: first number to add
     :param two: second number to add
@@ -204,7 +204,7 @@ from entrypoint2 import entrypoint
 
 @entrypoint
 def main(files=[]):
-    """ This function has repeating arguments.
+    """This function has repeating arguments.
     :param files: test input
     """
     print(files)
@@ -249,7 +249,11 @@ from entrypoint2 import entrypoint
 
 @entrypoint
 def func(
-    strpar: str, bytespar: bytes, intpar: int, floatpar: float, boolpar: bool,
+    strpar: str,
+    bytespar: bytes,
+    intpar: int,
+    floatpar: float,
+    boolpar: bool,
 ):
     print(f"strpar={repr(strpar)}")
     print(f"bytespar={repr(bytespar)}")
@@ -310,7 +314,11 @@ from entrypoint2 import entrypoint
 
 @entrypoint
 def add(
-    strpar="string", bytespar=b"bytes", intpar=21, floatpar=3.14, boolpar=False,
+    strpar="string",
+    bytespar=b"bytes",
+    intpar=21,
+    floatpar=3.14,
+    boolpar=False,
 ):
     print(f"strpar={repr(strpar)}")
     print(f"bytespar={repr(bytespar)}")
