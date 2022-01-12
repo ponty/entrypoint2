@@ -1,2 +1,4 @@
 easyprocess
 pytest
+mypy
+flake8
