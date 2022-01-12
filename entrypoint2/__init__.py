@@ -61,7 +61,7 @@ def _parse_doc(docs):
 
             # remove starting ':param'
             if line.startswith(":param"):
-                line = line[len(":param") :]
+                line = line[len(":param"):]
 
             # skip ':rtype:' row
             if line.startswith(":rtype:"):
@@ -119,9 +119,16 @@ def listLike(ann, t):
     return ann is List[t] or ann is Sequence[t] or ann is Iterable[t]
 
 
-_toStr = lambda x: x
-_toBytes = lambda x: bytes(x, "utf-8")
-_toBool = lambda x: x.strip().lower() not in ["false", "0", "no", ""]
+def _toStr(x):
+    return x
+
+
+def _toBytes(x):
+    return bytes(x, "utf-8")
+
+
+def _toBool(x):
+    return x.strip().lower() not in ["false", "0", "no", ""]
 
 
 def _useAnnotation(ann):
@@ -200,10 +207,10 @@ def _signature_parser(func):
         raise ValueError("Can't wrap a function with **kwargs")
 
     # Compulsary positional options
-    needed = args[0 : len(args) - len(defaults)]
+    needed = args[0: len(args) - len(defaults)]
 
     # Optional flag options
-    params = args[len(needed) :]
+    params = args[len(needed):]
 
     shorts, metavars, helps, description, epilog = _parse_doc(func.__doc__)
 
