@@ -33,16 +33,18 @@ class _ParagraphPreservingArgParseFormatter(argparse.HelpFormatter):
 
 
 def _parse_doc(docs):
-    # Converts a well-formed docstring into documentation
-    # to be fed into argparse.
+    """
+    Converts a well-formed docstring into documentation
+    to be fed into argparse.
 
-    # See signature_parser for details.
+    See signature_parser for details.
 
-    # shorts: (-k for --keyword -k, or "from" for "frm/from")
-    # metavars: (FILE for --input=FILE)
-    # helps: (docs for --keyword: docs)
-    # description: the stuff before
-    # epilog: the stuff after
+    shorts: (-k for --keyword -k, or "from" for "frm/from")
+    metavars: (FILE for --input=FILE)
+    helps: (docs for --keyword: docs)
+    description: the stuff before
+    epilog: the stuff after
+    """
 
     name = "(?:[a-zA-Z][a-zA-Z0-9-_]*)"
 
@@ -61,7 +63,7 @@ def _parse_doc(docs):
 
             # remove starting ':param'
             if line.startswith(":param"):
-                line = line[len(":param"):]
+                line = line[len(":param") :]
 
             # skip ':rtype:' row
             if line.startswith(":rtype:"):
@@ -207,10 +209,10 @@ def _signature_parser(func):
         raise ValueError("Can't wrap a function with **kwargs")
 
     # Compulsary positional options
-    needed = args[0: len(args) - len(defaults)]
+    needed = args[0 : len(args) - len(defaults)]
 
     # Optional flag options
-    params = args[len(needed):]
+    params = args[len(needed) :]
 
     shorts, metavars, helps, description, epilog = _parse_doc(func.__doc__)
 

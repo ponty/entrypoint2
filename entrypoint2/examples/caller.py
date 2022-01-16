@@ -1,6 +1,6 @@
 import logging
 
-import hello
+import hello  # type: ignore
 
 from entrypoint2 import entrypoint
 
