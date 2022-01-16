@@ -54,8 +54,8 @@ setup(
     url=URL,
     license="BSD",
     packages=PACKAGES,
-    # include_package_data=True,
-    # zip_safe=False,
     install_requires=install_requires,
-    # **extra
+    package_data={
+        NAME: ["py.typed"],
+    },
 )
