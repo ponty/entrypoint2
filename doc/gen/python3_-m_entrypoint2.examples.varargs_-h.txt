@@ -1,9 +1,9 @@
 $ python3 -m entrypoint2.examples.varargs -h
-usage: varargs.py [-h] [--debug] [args [args ...]]
+usage: varargs.py [-h] [--debug] [args ...]
 
 positional arguments:
   args
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG

@@ -4,6 +4,6 @@ usage: hello.py [-h] [--debug] message
 positional arguments:
   message
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG

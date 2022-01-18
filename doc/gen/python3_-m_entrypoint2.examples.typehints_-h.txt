@@ -8,6 +8,6 @@ positional arguments:
   floatpar
   boolpar
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG

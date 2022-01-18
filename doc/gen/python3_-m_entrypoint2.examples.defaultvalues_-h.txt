@@ -2,7 +2,7 @@ $ python3 -m entrypoint2.examples.defaultvalues -h
 usage: defaultvalues.py [-h] [-s STRPAR] [-b BYTESPAR] [-i INTPAR]
                         [-f FLOATPAR] [--boolpar] [--debug]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -s STRPAR, --strpar STRPAR
   -b BYTESPAR, --bytespar BYTESPAR

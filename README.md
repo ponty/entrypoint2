@@ -62,7 +62,7 @@ usage: hello.py [-h] [--debug] message
 positional arguments:
   message
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG
 ```
@@ -123,7 +123,7 @@ This function adds two numbers.
 positional arguments:
   one                first number to add
 
-optional arguments:
+options:
   -h, --help         show this help message and exit
   -t TWO, --two TWO  second number to add
   --three            print hello if True
@@ -223,7 +223,7 @@ usage: repeating.py [-h] [-f FILES] [--debug]
 
 This function has repeating arguments.
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -f FILES, --files FILES
                         test input
@@ -276,7 +276,7 @@ positional arguments:
   floatpar
   boolpar
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG
 ```
@@ -335,7 +335,7 @@ $ python3 -m entrypoint2.examples.defaultvalues -h
 usage: defaultvalues.py [-h] [-s STRPAR] [-b BYTESPAR] [-i INTPAR]
                         [-f FLOATPAR] [--boolpar] [--debug]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -s STRPAR, --strpar STRPAR
   -b BYTESPAR, --bytespar BYTESPAR
@@ -387,12 +387,12 @@ def func(*args):
 
 ```console
 $ python3 -m entrypoint2.examples.varargs -h
-usage: varargs.py [-h] [--debug] [args [args ...]]
+usage: varargs.py [-h] [--debug] [args ...]
 
 positional arguments:
   args
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG
 ```
