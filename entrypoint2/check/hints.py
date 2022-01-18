@@ -20,16 +20,16 @@ def flen(param: {typ}):
     """
 
 
-def run(typ):
-    cmd = [python, "-c", prog.format(typ=typ), "42", "--debug"]
+def run(typ, params):
+    cmd = [python, "-c", prog.format(typ=typ), "--debug"] + list(params)
     p = EasyProcess(cmd).call()
     if p.return_code != 0 or p.stderr != "":
-        raise ValueError(f"Error in Process call:{p}")
+        return p.stderr.splitlines()[-1]
     return p.stdout
 
 
 @entrypoint
-def add():
+def check_hints(*params):
     # TODO: For collections, the type of the collection item is in brackets
     # (Python 3.9+)
     # x: list[int] = [1]
@@ -50,6 +50,12 @@ def add():
 
     s = ""
     for x in [
+        "list[str]",
+        "list[bytes]",
+        "list[int]",
+        "list[float]",
+        "list[complex]",
+        "list[bool]",
         "str",
         "bytes",
         "int",
@@ -82,5 +88,5 @@ def add():
         "Optional[bool]",
         "Any",
     ]:
-        s = "{} -> {}".format(x, run(x))
+        s = "{} -> {}".format(x, run(x, params))
         print(s)
