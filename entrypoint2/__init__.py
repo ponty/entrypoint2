@@ -332,7 +332,7 @@ def _correct_args(func, kwargs):
     return [kwargs[arg] for arg in args] + kwargs["__args"]
 
 
-def entrypoint(func):
+def entrypoint(func: Callable) -> Callable:
     frame_local = sys._getframe(1).f_locals
     if "__name__" in frame_local and frame_local["__name__"] == "__main__":
         argv = sys.argv[1:]
