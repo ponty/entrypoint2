@@ -8,9 +8,11 @@ def func(
     intpar: int,
     floatpar: float,
     boolpar: bool,
+    listpar: list[int],
 ):
     print(f"strpar={repr(strpar)}")
     print(f"bytespar={repr(bytespar)}")
     print(f"intpar={repr(intpar)}")
     print(f"floatpar={repr(floatpar)}")
     print(f"boolpar={repr(boolpar)}")
+    print(f"listpar={repr(listpar)}")

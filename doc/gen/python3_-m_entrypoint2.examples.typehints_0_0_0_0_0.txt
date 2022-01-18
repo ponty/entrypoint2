@@ -1,6 +1,0 @@
-$ python3 -m entrypoint2.examples.typehints 0 0 0 0 0
-strpar='0'
-bytespar=b'0'
-intpar=0
-floatpar=0.0
-boolpar=False

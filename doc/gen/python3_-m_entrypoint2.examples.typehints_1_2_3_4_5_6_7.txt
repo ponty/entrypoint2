@@ -1,0 +1,7 @@
+$ python3 -m entrypoint2.examples.typehints 1 2 3 4 5 6 7
+strpar='1'
+bytespar=b'2'
+intpar=3
+floatpar=4.0
+boolpar=True
+listpar=[6, 7]

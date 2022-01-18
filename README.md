@@ -168,6 +168,13 @@ hello
 
 Logging:
 
+`--debug` is a special flag, it sets logging level to DEBUG with this call:
+```py
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)-6s: %(name)s - %(levelname)s - %(message)s')
+```
+
+Logging example:
+
 ```console
 $ python3 -m entrypoint2.examples.add 1 --debug
 2021-04-05 13:30:15,590: root - DEBUG - 5
@@ -184,6 +191,15 @@ add.py: error: the following arguments are required: one
 ```
 
 Printing version:
+
+`--version` is a special flag, it prints the program's version number and exit.
+The version can be set with one of this line:
+```py
+__version__ = "1.0"
+VERSION = "1.0" 
+version = "1.0"
+```
+
 <!-- embedme doc/gen/python3_-m_entrypoint2.examples.add_--version.txt -->
 
 ```console
@@ -241,6 +257,9 @@ $ python3 -m entrypoint2.examples.repeating -f input1.txt -f input2.txt
 type hints
 ==========
 
+The parameter conversion is based on the type hint. 
+If the hint is 'int' then the command line parameter is converted from string to int.
+
 ```py
 # entrypoint2/examples/typehints.py
 
@@ -254,12 +273,14 @@ def func(
     intpar: int,
     floatpar: float,
     boolpar: bool,
+    listpar: list[int],
 ):
     print(f"strpar={repr(strpar)}")
     print(f"bytespar={repr(bytespar)}")
     print(f"intpar={repr(intpar)}")
     print(f"floatpar={repr(floatpar)}")
     print(f"boolpar={repr(boolpar)}")
+    print(f"listpar={repr(listpar)}")
 
 ```
 
@@ -267,7 +288,8 @@ def func(
 
 ```console
 $ python3 -m entrypoint2.examples.typehints -h
-usage: typehints.py [-h] [--debug] strpar bytespar intpar floatpar boolpar
+usage: typehints.py [-h] [--debug]
+                    strpar bytespar intpar floatpar boolpar [listpar ...]
 
 positional arguments:
   strpar
@@ -275,36 +297,31 @@ positional arguments:
   intpar
   floatpar
   boolpar
+  listpar
 
 options:
   -h, --help  show this help message and exit
   --debug     set logging level to DEBUG
 ```
 
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.typehints_0_0_0_0_0.txt -->
+<!-- embedme doc/gen/python3_-m_entrypoint2.examples.typehints_1_2_3_4_5_6_7.txt -->
 
 ```console
-$ python3 -m entrypoint2.examples.typehints 0 0 0 0 0
-strpar='0'
-bytespar=b'0'
-intpar=0
-floatpar=0.0
-boolpar=False
-```
-
-<!-- embedme doc/gen/python3_-m_entrypoint2.examples.typehints_1_1_1_1_1.txt -->
-
-```console
-$ python3 -m entrypoint2.examples.typehints 1 1 1 1 1
+$ python3 -m entrypoint2.examples.typehints 1 2 3 4 5 6 7
 strpar='1'
-bytespar=b'1'
-intpar=1
-floatpar=1.0
+bytespar=b'2'
+intpar=3
+floatpar=4.0
 boolpar=True
+listpar=[6, 7]
 ```
+
 
 default value
 =============
+
+The parameter conversion is based on the default value. 
+If the default value is an int value like '21' then the command line parameter is converted from string to int.
 
 ```py
 # entrypoint2/examples/defaultvalues.py
