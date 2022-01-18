@@ -4,7 +4,9 @@ import logging
 import re
 import sys
 import textwrap
-from typing import Any, Iterable, List, Optional, Sequence
+from typing import Any, Callable, Iterable, List, Optional, Sequence
+
+PY39PLUS = sys.version_info[0] > 3 or sys.version_info[1] >= 9
 
 
 def _module_version(func):
@@ -117,8 +119,11 @@ def _parse_doc(docs):
     return shorts, metavars, helps, description, epilog
 
 
-def listLike(ann, t):
-    return ann is List[t] or ann is Sequence[t] or ann is Iterable[t]
+def _listLike(ann, t):
+    ret = ann is List[t] or ann is Sequence[t] or ann is Iterable[t]
+    if PY39PLUS:
+        ret = ret or ann == list[t]
+    return ret
 
 
 def _toStr(x):
@@ -133,33 +138,35 @@ def _toBool(x):
     return x.strip().lower() not in ["false", "0", "no", ""]
 
 
-def _useAnnotation(ann):
+def _useAnnotation(ann, positional=False):
     # https://stackoverflow.com/questions/48572831/how-to-access-the-type-arguments-of-typing-generic
     d = {}
     d["action"] = "store"
     d["type"] = _toStr
+    islist = False
+
     if ann is str:
         pass
     elif ann is bytes:
         d["type"] = _toBytes
     elif ann is bool:
         d["type"] = _toBool
-    elif listLike(ann, str):
-        d["action"] = "append"
-    elif listLike(ann, bytes):
-        d["action"] = "append"
+    elif _listLike(ann, str):
+        islist = True
+    elif _listLike(ann, bytes):
+        islist = True
         d["type"] = _toBytes
-    elif listLike(ann, int):
-        d["action"] = "append"
+    elif _listLike(ann, int):
+        islist = True
         d["type"] = int
-    elif listLike(ann, float):
-        d["action"] = "append"
+    elif _listLike(ann, float):
+        islist = True
         d["type"] = float
-    elif listLike(ann, complex):
-        d["action"] = "append"
+    elif _listLike(ann, complex):
+        islist = True
         d["type"] = complex
-    elif listLike(ann, bool):
-        d["action"] = "append"
+    elif _listLike(ann, bool):
+        islist = True
         d["type"] = _toBool
     elif ann is Any:
         pass
@@ -177,7 +184,15 @@ def _useAnnotation(ann):
         d["type"] = _toBool
     else:
         d["type"] = ann
-    return d["action"], d["type"]
+
+    nargs = None
+    if islist:
+        if positional:
+            nargs = "*"
+        else:
+            d["action"] = "append"
+
+    return d["action"], d["type"], nargs
 
 
 def _signature_parser(func):
@@ -262,7 +277,7 @@ def _signature_parser(func):
         elif default is False:
             d["action"] = "store_true"
         elif ann:
-            d["action"], d["type"] = _useAnnotation(ann)
+            d["action"], d["type"], _ = _useAnnotation(ann)
         elif isinstance(default, list):
             d["action"] = "append"
             d["type"] = _toStr
@@ -292,7 +307,9 @@ def _signature_parser(func):
         ann = annotations.get(need)
         d = {"action": "store"}
         if ann:
-            d["action"], d["type"] = _useAnnotation(ann)
+            d["action"], d["type"], nargs = _useAnnotation(ann, positional=True)
+            if nargs:
+                d["nargs"] = nargs
         else:
             d["type"] = _toStr
 
