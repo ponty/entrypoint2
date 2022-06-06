@@ -345,7 +345,7 @@ def _correct_args(func, kwargs):
     Convert a dictionary of arguments including __argv into a list
     for passing to the function.
     """
-    args = inspect.getargspec(func)[0]
+    args = inspect.getfullargspec(func)[0]
     return [kwargs[arg] for arg in args] + kwargs["__args"]
 
 
