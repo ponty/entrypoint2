@@ -1,6 +1,5 @@
 $ python3 -m entrypoint2.examples.typehints -h
-usage: typehints.py [-h] [--debug]
-                    strpar bytespar intpar floatpar boolpar [listpar ...]
+usage: typehints.py [-h] [--debug] strpar bytespar intpar floatpar boolpar [listpar ...]
 
 positional arguments:
   strpar

@@ -288,8 +288,7 @@ def func(
 
 ```console
 $ python3 -m entrypoint2.examples.typehints -h
-usage: typehints.py [-h] [--debug]
-                    strpar bytespar intpar floatpar boolpar [listpar ...]
+usage: typehints.py [-h] [--debug] strpar bytespar intpar floatpar boolpar [listpar ...]
 
 positional arguments:
   strpar
@@ -349,8 +348,7 @@ def add(
 
 ```console
 $ python3 -m entrypoint2.examples.defaultvalues -h
-usage: defaultvalues.py [-h] [-s STRPAR] [-b BYTESPAR] [-i INTPAR]
-                        [-f FLOATPAR] [--boolpar] [--debug]
+usage: defaultvalues.py [-h] [-s STRPAR] [-b BYTESPAR] [-i INTPAR] [-f FLOATPAR] [--boolpar] [--debug]
 
 options:
   -h, --help            show this help message and exit

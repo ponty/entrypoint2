@@ -60,7 +60,6 @@ def _parse_doc(docs):
     if docs:
         prev = ""
         for line in docs.split("\n"):
-
             line = line.strip()
 
             # remove starting ':param'
@@ -303,7 +302,6 @@ def _signature_parser(func):
 
     # Compulsary positional options  f(p1,p2)
     for need in needed:
-
         ann = annotations.get(need)
         d = {"action": "store"}
         if ann:
